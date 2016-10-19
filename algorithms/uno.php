@@ -63,6 +63,13 @@ function scrapping(){
 	foreach ($local as $clave => $valor) {
 		echo ' Valor: ' . $valor;
 	}
+	$insert = db_insert('partidos')
+->fields(array(
+'id_partido' => 101,
+goles_local => $rLocal,
+goles_visitante => $rVisitante,
+))
+->execute();
 }
 
  
