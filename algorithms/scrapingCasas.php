@@ -8,15 +8,16 @@ $url = 'http://www.resultados-futbol.com/primera/grupo1/jornada10';
  	$xpath=new DOMXpath($html);
 
  	$trs = $html->getElementsByTagName("tr");
-
+ 	$flag=true;
  	foreach($trs as $tr){
- 		$nameStat = $tr->getElementsByTagName("div");
- 		$flag=true;
- 		
+ 		$nameStat = $tr->getElementsByTagName("div"); 		
  		$eLocal = $tr->getElementsByTagName("td")->item(2)->nodeValue;
  		$eVisitante = $tr->getElementsByTagName("td")->item(4)->nodeValue;
- 		echo 'Local ' . $eLocal , ' Visitante ' . $eVisitante;
- 		echo "<br>" . PHP_EOL;
+ 		if(!empty($eLocal)AND!empty($eVisitante)){
+ 			echo 'Local ' . utf8_decode($eLocal) , ' Visitante ' .utf8_decode($eVisitante);
+ 			echo "<br>" . PHP_EOL;
+ 			$flag = true;
+ 		}
 		foreach($nameStat as $stat){
 			$var=$stat->getElementsByTagName("a")->item(0)->nodeValue;
 			if ($var =='Bet365' AND $flag = true){
@@ -44,6 +45,7 @@ $url = 'http://www.resultados-futbol.com/primera/grupo1/jornada10';
 				echo "<br>" . PHP_EOL;
 				$flag = false;
 			}
+
 		}
 	}
 ?>

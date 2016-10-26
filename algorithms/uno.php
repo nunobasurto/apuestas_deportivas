@@ -1,21 +1,24 @@
 <?php
-/*    $id = 100 + $i;
+for ($i = 1; $i <= 10; $i++) {
+    $id = 100 + $i;
     //Empiezan los Selects para extraer informacion del partido.
     $jornada = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id' => $id))->fetchField();
     $equipolocal  = db_query('SELECT e.nombre FROM {fecha_jornada} f, {equipos} e WHERE f.id_partido = :id AND f.equipo_local = e.id_equipo', array(':id' => $id))->fetchField();
     $equipovisitante  = db_query('SELECT e.nombre FROM {fecha_jornada} f, {equipos} e WHERE f.id_partido = :id AND f.equipo_visitante = e.id_equipo', array(':id'=>$id))->fetchField();
-    */
-    //Se establece la URL donde realizar Scrapping
-    //$url = 'http://www.marca.com/estadisticas/futbol/primera/2016_17/jornada_'. $jornada .'/'.$equipolocal.'_'.$equipovisitante;
-	$url = 'http://www.resultados-futbol.com/partido/Ud-Palmas/Granada';
+    
+    $local= array();
+    $visitante = array();
+    for ($i=0; $i<=15; $i++){
+        $local[$i]=0;
+        $visitante[$i] = 0;
+    }
+	$url = 'http://www.resultados-futbol.com/partido/'. $equipolocal .'/'.$equipovisitante;
     $source = file_get_contents($url);
  	libxml_use_internal_errors(true);
  	libxml_clear_errors();
  	$html = new DOMDocument();
  	$html->loadHTML($source);
  	$xpath=new DOMXpath($html);
- 	$local = array();
- 	$visitante = array();
  	$trs = $html->getElementsByTagName("tr");
  	$ul = $html->getElementsByTagName("ul");
 
@@ -24,19 +27,74 @@
  	$flag = true;
  	foreach($trs as $tr){
  		$nameStat = $tr->getElementsByTagName("h6")->item(0)->nodeValue;
- 		if(!empty($nameStat) AND $nameStat!='Lesiones'){
- 			echo 'El nombre de la estadistica es:' . $nameStat;
- 			$stat = $tr->getElementsByTagName("td")->item(0)->nodeValue;
-	 		$stat2 = $tr->getElementsByTagName("td")->item(2)->nodeValue;
-	 		array_push($local, $stat);
-	 		array_push($visitante, $stat2);
+ 		if(!empty($nameStat)) {
+ 			if ($nameStat == 'Posesión del balón'){
+ 				$local[0]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[0]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Goles'){
+ 				$local[1]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[1]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Tiros a puerta'){
+ 				$local[2]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[2]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Tiros fuera'){
+ 				$local[3]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[3]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Total tiros'){
+ 				$local[4]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[4]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Paradas del portero'){
+ 				$local[5]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[5]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Saques de esquina'){
+ 				$local[6]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[6]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Fueras de juego'){
+ 				$local[7]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[7]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Tarjetas Amarillas'){
+ 				$local[8]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[8]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Tarjetas Rojas'){
+ 				$local[9]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[9]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Asistencias'){
+ 				$local[10]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[10]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Tiros al palo'){
+ 				$local[11]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[11]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Lesiones'){
+ 				$local[12]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[12]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Sustituciones'){
+ 				$local[13]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[13]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
+ 			if ($nameStat == 'Faltas'){
+ 				$local[14]=$tr->getElementsByTagName("td")->item(0)->nodeValue;
+ 				$visitante[14]=$tr->getElementsByTagName("td")->item(2)->nodeValue;
+ 			}
 		}
 	}
 	echo "<br>" . PHP_EOL;
 	print_r($local);
 	echo "<br>" . PHP_EOL;
 	print_r($visitante);
-	/*
+	
 	$insert = db_insert('partidos')
 	->fields(array(
 	'id_partido' => $id,
@@ -61,13 +119,17 @@
 	'amarillas_visitante' => $visitante[8],
 	'rojas_local' => $local[9],
 	'rojas_visitante' => $visitante[9],
-	'asistencias_local' => $local[10],
-	'asistencias_visitante' => $visitante[10],
-	'sustituciones_local' => $local[11],
-	'sustituciones_visitante' => $visitante[11],
-	'faltas_local' => $local[12],
-	'faltas_visitante' => $visitante[12],
+	'asistencias_local'=> $local[10],
+	'asistencias_visitante'=> $visitante[10],
+	'palos_local'=> $local[11],
+	'palos_visitante'=> $visitante[11],
+	'lesiones_local'=> $local[12],
+	'lesiones_visitante'=> $visitante[12],
+	'sustituciones_local' => $local[13],
+	'sustituciones_visitante' => $visitante[13],
+	'faltas_local' => $local[14],
+	'faltas_visitante' => $visitante[14],
 	))
 	->execute();
-	} */
+	} 
 ?>
