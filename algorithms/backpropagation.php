@@ -13,6 +13,8 @@ class NeuralNetwork
     public $output_layer_weights=array();
     public $output_layer_bias=array();
     public $learning_rate = 0,5;
+    public $hidden_layer;
+    public $output_layer;
     function __construct($num_inputs, $num_hidden, $num_outputs, $hidden_layer_weights, $hidden_layer_bias, $output_layer_weights, $output_layer_bias)
     {
         this->num_inputs=$num_inputs;
@@ -85,6 +87,7 @@ class NeuronLayer
 {
     public $num_neurons=0;
     public $bias = 0;
+    public $neurons;
 
     function __construct($num_neurons, $bias)
     {
@@ -115,6 +118,40 @@ class NeuronLayer
             $outputs.add($neuron.output)
         }
         return $outputs;
+    }
+}
+
+/**
+* 
+*/
+class Neuron
+{
+    public $bias = 0;
+    public $weights;
+    public $inputs;
+    function __construct($bias)
+    {
+        $this->bias = $bias;
+        $this->weights = array();
+    }
+    function calculate_output($inputs) 
+    {
+        $this->inputs = $inputs;
+        $this->outputs = squash(calculate_total_net_input())
+        reutrn $this->outputs;
+    }
+    function calculate_total_net_input()
+    {
+        $total = 0;
+        for ($i=0; $i < $inputs; $i++) { 
+            $total = $inputs[$i]*$weights[$i];
+        }
+        return $toal + $bias;
+    }
+
+    function squash($total_net_input)
+    {
+        return 1/(1+ exp(-$total_net_input));
     }
 }
 
