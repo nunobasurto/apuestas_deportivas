@@ -64,7 +64,41 @@ class NeuralNetwork
     }
     function train($training_inputs, $training_outputs)
     {
-        //Implementar lo último.
+        feed_forward($training_inputs)
+
+        # 1. Output neuron deltas
+        $pd_errors_wrt_output_neuron_total_net_input = [0] * len($output_layer.neurons)
+        for ($o=0; $o < sizeof($output_layer.neurons); $o++) 
+        { 
+            $pd_errors_wrt_output_neuron_total_net_input[$o] = $output_layer.neurons[$o].calculate_pd_error_wrt_total_net_input(training_outputs[$o])
+        }
+
+        # 2. Hidden neuron deltas
+        $pd_errors_wrt_hidden_neuron_total_net_input = [0] * len($hidden_layer.neurons);
+        for ($h=0; $h < sizeof($hidden_layer.neurons); $h++) 
+        { 
+            $d_error_wrt_hidden_neuron_output = 0;
+            for ($o=0; $o < sizeof($output_layer.neurons); $o++) { 
+                $d_error_wrt_hidden_neuron_output += $pd_errors_wrt_output_neuron_total_net_input[$o] * $output_layer.neurons[$o].weights[$h];
+            }
+            $pd_errors_wrt_hidden_neuron_total_net_input[$h] = $d_error_wrt_hidden_neuron_output * $hidden_layer.neurons[$h].calculate_pd_total_net_input_wrt_input()
+        }
+        # 3. Update output neuron weights
+        for ($o=0; $o < sizeof($output_layer.neurons); $o++) { 
+            for ($w_ho=0; $w_ho < sizeof($output_layer.neurons[$o].weights) ; $w_ho++) { 
+                $pd_error_wrt_weight = $pd_errors_wrt_output_neuron_total_net_input[$o] * $output_layer.neurons[$o].calculate_pd_total_net_input_wrt_weight($w_ho);
+                $output_layer.neurons[$o].weights[$w_ho] -= $LEARNING_RATE * $pd_error_wrt_weight;
+            }
+        }
+        # 4. Update hidden neuron weights
+
+        for ($h=0; $h < sizeof($hidden_layer.neurons); $h++) { 
+            for ($w_ih=0; $w_ih < sizeof($hidden_layer.neurons[$h].weights); $w_ih++) { 
+                $pd_error_wrt_weight = $pd_errors_wrt_hidden_neuron_total_net_input[$h] * $hidden_layer.neurons[$h].calculate_pd_total_net_input_wrt_weight($w_ih);
+                $hidden_layer.neurons[$h].weights[$w_ih] -= $LEARNING_RATE * $pd_error_wrt_weight;
+            }
+        }
+        
     }
     function calculate_total_error($training_sets)
     {
@@ -152,6 +186,31 @@ class Neuron
     function squash($total_net_input)
     {
         return 1/(1+ exp(-$total_net_input));
+    }
+
+    function calculate_pd_error_wrt_total_net_input($target_output)
+    {
+        return calculate_pd_error_wrt_output(target_output) * calculate_pd_total_net_input_wrt_input();
+    }
+
+    function calculate_error($target_output)
+    {
+        return 0.5 * ($target_output - $outputs) ** 2;
+    }
+
+    function calculate_pd_error_wrt_output($target_output)
+    {
+        return -($target_output - $outputs);
+    }
+
+    function calculate_pd_total_net_input_wrt_input()
+    {
+        return $outputs * (1 - $outputs);
+    }
+
+    function calculate_pd_total_net_input_wrt_weight($index)
+    {
+        return $inputs[$index];
     }
 }
 
