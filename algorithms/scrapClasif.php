@@ -30,7 +30,7 @@
 			echo $posicion . ' ' . $equipo . ' ' . $puntos . ' ' . $jugados . ' ' . $victorias . ' ' . $empates . ' ' . $derrotas . ' ' . $favor . ' ' . $contra;
 			echo "<br>" . PHP_EOL;
 
-			/*$update = db_update('equipos')
+			$update = db_update('equipos')
 			->fields(array(
 				'posicion' => $posicion,
 				'puntos' => $puntos,
@@ -43,10 +43,6 @@
 				))
 			->condition('nombreCompleto', $equipo ,'=')
 			->execute();*/
-			
-			/*$args = array(':posicion' => $posicion, ':equipo' => $equipo);
-			$art = db_query('UPDATE {equipos} SET posicion=:posicion  WHERE nombreCompleto = :equipo', 
-				array(':posicion'=>$posicion, ':equipo'=>$equipo))->fetchField();*/
 		}
 		if($posicion == 20){
 			$flag=False;

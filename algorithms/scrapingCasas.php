@@ -73,11 +73,11 @@
 				))
 				->execute();
 
-				$insert2 = db_insert('apuestas')
+				$insert2 = db_update('apuestas')
 				->fields(array(
 				'BET365' => $id_1,
 				))
-				->where('id_partido', $id_partido, '=')
+				->condition('id_partido', $id_partido, '=')
 				->execute();
 			}
 			elseif ($var =='Marca Apuestas' AND $flag2 ==True){
@@ -99,14 +99,14 @@
 				))
 				->execute();
 
-				$insert2 = db_insert('apuestas')
+				$insert2 = db_update('apuestas')
 				->fields(array(
 				'Marca' => $id_2,
 				))
-				->where('id_partido', $id_partido, '=')
+				->condition('id_partido', $id_partido, '=')
 				->execute();
 			}
-			elseif (var =='bwin' AND $flag3 == true){
+			elseif ($var =='bwin' AND $flag3 == true){
 				$Local=substr($stat->getElementsByTagName("a")->item(1)->nodeValue,2,4);
 				$Empate=substr($stat->getElementsByTagName("a")->item(2)->nodeValue,2,4);
 				$Visitante=substr($stat->getElementsByTagName("a")->item(3)->nodeValue,2,4);
@@ -125,11 +125,11 @@
 				))
 				->execute();
 
-				$insert2 = db_insert('apuestas')
+				$insert2 = db_update('apuestas')
 				->fields(array(
 				'BWIN' => $id_3,
 				))
-				->where('id_partido', $id_partido, '=')
+				->condition('id_partido', $id_partido, '=')
 				->execute();
 			}
 			elseif ($var =='888 sport' AND $flag4 == true){
@@ -151,13 +151,13 @@
 				))
 				->execute();
 
-				$insert2 = db_insert('apuestas')
+				$insert2 = db_update('apuestas')
 				->fields(array(
 				'888Bet' => $id_4,
 				))
-				->where('id_partido', $id_partido, '=')
+				->condition('id_partido', $id_partido, '=')
 				->execute();
-				}
+				
 			}
 		}
 	}
