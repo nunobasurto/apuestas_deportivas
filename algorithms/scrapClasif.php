@@ -26,11 +26,11 @@
 			$favor = (int)$tr->getElementsByTagName("td")->item(6)->nodeValue;
 			$contra = (int)$tr->getElementsByTagName("td")->item(7)->nodeValue;
 			
-			$equipo = substr($equipo,0,strlen($equipo)-1);
+			$equipo = trim($equipo);
 			echo $posicion . ' ' . $equipo . ' ' . $puntos . ' ' . $jugados . ' ' . $victorias . ' ' . $empates . ' ' . $derrotas . ' ' . $favor . ' ' . $contra;
 			echo "<br>" . PHP_EOL;
 
-			$update = db_update('equipos')
+			/*$update = db_update('equipos')
 			->fields(array(
 				'posicion' => $posicion,
 				'puntos' => $puntos,
@@ -42,7 +42,7 @@
 				'contra'=> $contra,
 				))
 			->condition('nombreCompleto', $equipo ,'=')
-			->execute();
+			->execute();*/
 			
 			/*$args = array(':posicion' => $posicion, ':equipo' => $equipo);
 			$art = db_query('UPDATE {equipos} SET posicion=:posicion  WHERE nombreCompleto = :equipo', 
