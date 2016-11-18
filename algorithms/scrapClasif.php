@@ -1,4 +1,7 @@
 <?php
+define('DRUPAL_ROOT', getcwd());
+require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 	$url = 'http://www.resultados-futbol.com/primera/grupo1/jornada11';
 	$source = file_get_contents($url);
  	libxml_use_internal_errors(true);
@@ -42,7 +45,7 @@
 				'contra'=> $contra,
 				))
 			->condition('nombreCompleto', $equipo ,'=')
-			->execute();*/
+			->execute();
 		}
 		if($posicion == 20){
 			$flag=False;
