@@ -14,7 +14,6 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
  	$flag=true;
 
  	foreach($trs as $tr){
- 		//echo 'Baaaaaa';
  		$nameStat = $tr->getElementsByTagName("div"); 		
  		$eLocal = $tr->getElementsByTagName("td")->item(2)->nodeValue;
  		$eVisitante = $tr->getElementsByTagName("td")->item(4)->nodeValue;
