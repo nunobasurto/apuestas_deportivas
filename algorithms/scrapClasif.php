@@ -2,7 +2,8 @@
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-	$url = 'http://www.resultados-futbol.com/primera/grupo1/jornada11';
+	$jornada = 10;
+	$url = 'http://www.resultados-futbol.com/primera/grupo1/jornada' . "$jornada";
 	$source = file_get_contents($url);
  	libxml_use_internal_errors(true);
  	libxml_clear_errors();
@@ -19,8 +20,7 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 		}
 		$equipo = $tr->getElementsByTagName("td")->item(0)->nodeValue;
 		if($flag==True AND !empty($equipo)){
-			/*echo 'Pos ' . $posicion . ' ' . utf8_decode($equipo);
-			echo "<br>" . PHP_EOL;*/
+
 			$puntos = (int)$tr->getElementsByTagName("td")->item(1)->nodeValue;
 			$jugados = (int)$tr->getElementsByTagName("td")->item(2)->nodeValue;
 			$victorias =(int) $tr->getElementsByTagName("td")->item(3)->nodeValue;
@@ -32,9 +32,14 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 			$equipo = trim($equipo);
 			echo $posicion . ' ' . $equipo . ' ' . $puntos . ' ' . $jugados . ' ' . $victorias . ' ' . $empates . ' ' . $derrotas . ' ' . $favor . ' ' . $contra;
 			echo "<br>" . PHP_EOL;
+			//Hay que insertar en la tabla clasificacion, no equipos.
+			//Necesitamos el id_equipo no necesitamos para nada el nombreCompleto
+			 $id_equipo = db_query('SELECT e.id_equipo FROM {equipos} e WHERE e.nombreCompleto = :equipo', array(':equipo' => $equipo))->fetchField();
 
-			$update = db_update('equipos')
+			$insert = db_insert('clasificacion_jornada')
 			->fields(array(
+				'id_equipo' => $id_equipo,
+				'jornada' => $jornada,
 				'posicion' => $posicion,
 				'puntos' => $puntos,
 				'jugados'=> $jugados,
@@ -44,7 +49,6 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 				'favor'=> $favor,
 				'contra'=> $contra,
 				))
-			->condition('nombreCompleto', $equipo ,'=')
 			->execute();
 		}
 		if($posicion == 20){

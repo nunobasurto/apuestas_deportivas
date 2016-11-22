@@ -5,7 +5,8 @@ require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 //Recibimos la jornada actual, en nuestro caso la 12.
-$jornada=11;
+$jornada=7;
+$jorAux=7;
 $jornada = $jornada*100;
 for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
 	//De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
@@ -30,7 +31,8 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		$local->join('partidos', 'p', 'f.id_partido = p.id_partido');
 		$local->fields('p',array('goles_local', 'goles_visitante'))
 			->fields('f', array('jornada'))
-			->condition('f.equipo_local', $partido[$i], '=');
+			->condition('f.equipo_local', $partido[$i], '=')
+			->condition('f.jornada' , $jorAux, '<=');
 		$result = $local->execute();
 
 		$puntos = array();
@@ -52,7 +54,8 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		$visitante->join('partidos', 'p', 'f.id_partido = p.id_partido');
 		$visitante->fields('p',array('goles_local', 'goles_visitante'))
 			->fields('f', array('jornada'))
-			->condition('f.equipo_visitante', $partido[$i], '=');
+			->condition('f.equipo_visitante', $partido[$i], '=')
+			->condition('f.jornada' , $jorAux, '<=');
 		$result = $visitante->execute();
 
 		foreach ($result as $key) {
@@ -71,7 +74,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		krsort($goles_contra);
 		//Insertamos en la tabla equipo las rachas.
 		//el equipo en cuestion es $partido[$i];
-		$update = db_update('equipos')
+		$update = db_update('clasificacion_jornada')
 			->fields(array(
 				'puntosUlt5' => array_sum(array_slice($puntos, 0,5)),
 				'puntosUlt4' => array_sum(array_slice($puntos, 0,4)),
@@ -90,6 +93,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 				'golesCont1'=> array_sum(array_slice($goles_contra, 0,1)),
 				))
 			->condition('id_equipo', $partido[$i] ,'=')
+			->condition('jornada', $jorAux, '=')
 			->execute();
 
 
