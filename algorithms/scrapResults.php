@@ -5,7 +5,7 @@ require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 
-for($k =1000; $k<=1100; $k+=100){
+for($k =100; $k<=1100; $k+=100){
 for ($i = 1; $i <= 10; $i++) {
     $id = $k + $i;
     //Empiezan los Selects para extraer informacion del partido.
@@ -105,9 +105,8 @@ for ($i = 1; $i <= 10; $i++) {
 	$insert = db_insert('partidos')
 	->fields(array(
 	'id_partido' => $id,
-	'arbitro' => substr($arbitro,8),
-	'posesion_local' =>$local[0],
-	'posesion_visitante' => $visitante[0],
+	'posesion_local' =>substr($local[0], 0, 2)/100,
+	'posesion_visitante' => substr($visitante[0], 0, 2)/100,
 	'goles_local' => $local[1],
 	'goles_visitante' => $visitante[1],
 	'remates3p_local' => $local[2],

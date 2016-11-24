@@ -15,7 +15,7 @@ class NeuralNetwork
     public $learning_rate = 0.5;
     public $hidden_layer;
     public $output_layer;
-    function __construct($num_inputs, $num_hidden, $num_outputs, $hidden_layer_weights, $hidden_layer_bias, $output_layer_weights, $output_layer_bias)
+    function __construct($num_inputs, $num_hidden, $num_outputs, $hidden_layer_weights = null, $hidden_layer_bias = null, $output_layer_weights = null, $output_layer_bias = null)
     {
         $this->num_inputs=$num_inputs;
         $this->hidden_layer = new NeuronLayer($num_hidden, $hidden_layer_bias);
@@ -111,7 +111,11 @@ class NeuralNetwork
         for ($t=0; $t < count($training_sets); $t++) { 
             $training_inputs = $training_sets[$t][0];
             $training_outputs = $training_sets[$t][1];
+            echo 'Output original ' . $training_outputs;
             $this->feed_forward($training_inputs);
+            echo ' Output calculado ';
+            print_r($this->feed_forward($training_inputs));
+            echo "<br>" . PHP_EOL;
             for ($o=0; $o < count($training_outputs); $o++) { 
                 $total_error += $this->output_layer->neurons[$o]->calculate_error($training_outputs[$o]);
             }
@@ -210,11 +214,125 @@ class Neuron
         return $this->inputs[$index];
     }
 }
-$nn = new NeuralNetwork(2,2,2, [0.15,0.2,0.25,0.3], 0.35, [0.4,0.45,0.5,0.55], 0.6);
+/*
+$nn = new NeuralNetwork(2,2,2);
 for ($i=0; $i <10000; $i++) { 
     $nn->train([0.05, 0.1], [0.01, 0.99]);
     echo $i . ' ' . round($nn->calculate_total_error([[[0.05,0.1], [0.01,0.99]]]),9);
     echo "<br>" . PHP_EOL;
 
 }
+*/
+/**
+Se encarga de generar instancias para el training set.
+*/
+
+$training_set = array();
+$jornada = 11;
+$jornada = $jornada*100;
+for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
+    //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
+    //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
+    $local  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();
+    $visitante  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id'=>$j))->fetchField();
+
+    $arrayInput = array();
+
+    $selectPar = db_select('fecha_jornada','f');
+    $selectPar->join('partidos', 'p', 'f.id_partido = p.id_partido');
+    $selectPar->fields('p')
+            ->fields('f', array('jornada'))
+            ->condition('f.equipo_local', $local, '=')
+            ->condition('f.equipo_visitante' , $visitante, '=');
+    $resultPar = $selectPar->execute();
+
+    $goles_fav = 0;
+    $goles_cont = 0;
+
+    foreach ($resultPar as $key) {
+        $goles_fav = $key->goles_local;
+        $goles_cont = $key->goles_visitante;
+        foreach($key as $k){
+            if($key->id_partido != $k)
+                array_push($arrayInput, $k);
+
+        }
+    }
+
+    $selectLoc = db_select('clasificacion_jornada','cj');
+    $selectLoc->fields('cj')
+        ->condition('cj.id_equipo', $local, '=')
+        ->condition('cj.jornada' , $jornada, '=');
+    $resultLoc = $selectLoc->execute();
+    echo "<br>" . PHP_EOL;
+    foreach ($resultLoc as $key) {
+        foreach($key as $k){
+            if($key->id_equipo != $k AND $key->jornada != $k)
+                array_push($arrayInput, $k);
+        }
+    }
+    
+    $selectVis = db_select('clasificacion_jornada','cj');
+    $selectVis->fields('cj')
+        ->condition('cj.id_equipo', $visitante, '=')
+        ->condition('cj.jornada' , $jornada, '=');
+    $resultVis = $selectVis->execute();
+    echo "<br>" . PHP_EOL;
+    foreach ($resultVis as $key) {
+        foreach($key as $k){
+            if($key->id_equipo != $k AND $key->jornada != $k)
+                array_push($arrayInput, $k);
+        }
+    }
+    $output = 0;
+    if ($goles_fav>$goles_cont)
+        $output = 0;
+    else if ($goles_fav==$goles_cont)
+        $output = 0.5;
+    else
+        $output = 1;
+//}
+    print_r($arrayInput);
+    $arrayInstancia = array();
+    array_push($arrayInstancia, $arrayInput);
+    array_push($arrayInstancia, $output);
+    echo "<br>" . PHP_EOL;
+    echo "<br>" . PHP_EOL;
+    print_r($arrayInstancia);
+    array_push($training_set, $arrayInstancia);
+}
+$nn = new NeuralNetwork(sizeof($training_set[0][0]), 5, sizeof($training_set[0][1]));
+for ($i=0; $i <1000; $i++) {
+    $random = rand(0, sizeof($training_set));
+    $training_inputs = $training_set[$random][0];
+    $training_outputs = $training_set[$random][1];
+    $nn->train($training_inputs,$training_outputs);
+    echo $i . ' ' . $nn->calculate_total_error($training_set);
+    echo "<br>" . PHP_EOL;
+}
+
+/*
+    foreach ($result as $key) {
+        foreach($key as $k){
+            array_push($arrayInput, $k)
+        }
+    }
+//$training_set = [[[0,0][0]],[[0,1][1]],[[1,0][1]], [[1,1][0]]];
+$training_set = array(
+    array(array(0,0),0),
+    array(array(0,1),1),
+    array(array(1,0),1),
+    array(array(1,1),0)
+    );
+
+$nn = new NeuralNetwork(sizeof($training_set[0][0]), 5, sizeof($training_set[0][1]));
+for ($i=0; $i <1000; $i++) {
+    $random = rand(0, sizeof($training_set));
+    $training_inputs = $training_set[$random][0];
+    $training_outputs = $training_set[$random][1];
+    $nn->train($training_inputs,$training_outputs);
+    echo $i . ' ' . $nn->calculate_total_error($training_set);
+    echo "<br>" . PHP_EOL;
+}
+*/
 ?>

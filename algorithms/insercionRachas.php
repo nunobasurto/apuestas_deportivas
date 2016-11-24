@@ -5,8 +5,8 @@ require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 //Recibimos la jornada actual, en nuestro caso la 12.
-$jornada=7;
-$jorAux=7;
+$jornada=1;
+$jorAux=1;
 $jornada = $jornada*100;
 for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
 	//De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
@@ -21,9 +21,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 	$partido = array();
 	array_push($partido, $equipolocal);
 	array_push($partido, $equipovisitante);
-	//Instanciaspara cada equipo.
-
-
+	//Instancias para cada equipo.
 	for ($i=0; $i < sizeof($partido); $i++) { 
 		echo "Equipo es: ", $partido[$i];
 
@@ -76,6 +74,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		//el equipo en cuestion es $partido[$i];
 		$update = db_update('clasificacion_jornada')
 			->fields(array(
+				'local_visitante' => $i,
 				'puntosUlt5' => array_sum(array_slice($puntos, 0,5)),
 				'puntosUlt4' => array_sum(array_slice($puntos, 0,4)),
 				'puntosUlt3'=> array_sum(array_slice($puntos, 0,3)),
