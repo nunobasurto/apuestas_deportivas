@@ -2,7 +2,7 @@
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-	$jornada = 10;
+	$jornada = 11;
 	$url = 'http://www.resultados-futbol.com/primera/grupo1/jornada' . "$jornada";
 	$source = file_get_contents($url);
  	libxml_use_internal_errors(true);

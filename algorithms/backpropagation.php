@@ -273,10 +273,10 @@ for ($j=$jornada+1; $j <=$jornada+10; $j++) {
     foreach ($resultPar as $key) {
         $goles_fav = $key->goles_local;
         $goles_cont = $key->goles_visitante;
-        foreach($key as $k){
+       /* foreach($key as $k){
             if($key->id_partido != $k)
                 array_push($arrayInput, $k);
-        }
+        }*/
     }
     $selectLoc = db_select('clasificacion_jornada','cj');
     $selectLoc->fields('cj')
@@ -319,13 +319,13 @@ for ($j=$jornada+1; $j <=$jornada+10; $j++) {
     array_push($arrayInstancia, $arrayInput);
     array_push($arrayInstancia, $output);
     echo "<br>" . PHP_EOL;
-    
+    /*
     echo '[[ ';
     foreach ($arrayInput as $value) {
         echo $value . ' ,';
     }
     echo '], [' . $output . ']] ,';
-
+*/
     array_push($training_set, $arrayInstancia);
 }
 
@@ -333,8 +333,8 @@ for ($j=$jornada+1; $j <=$jornada+10; $j++) {
 
 $training_inputs = array();
 $training_outputs = array();
-$nn = new NeuralNetwork(sizeof($training_set[0][0]), 20 , sizeof($training_set[0][1]));
-for ($i=0; $i <1; $i++) {
+$nn = new NeuralNetwork(sizeof($training_set[0][0]), 5 , sizeof($training_set[0][1]));
+for ($i=0; $i <10000; $i++) {
     $random = rand(0, sizeof($training_set));
     $training_inputs = $training_set[$random][0];
     $training_outputs = $training_set[$random][1];

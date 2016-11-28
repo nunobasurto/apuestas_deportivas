@@ -5,8 +5,8 @@ require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 //Recibimos la jornada actual, en nuestro caso la 12.
-$jornada=1;
-$jorAux=1;
+$jornada=11;
+$jorAux=11;
 $jornada = $jornada*100;
 for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
 	//De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
