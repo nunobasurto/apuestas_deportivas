@@ -126,13 +126,9 @@ class NeuralNetwork
         for ($t=0; $t < count($training_sets); $t++) { 
             $training_inputs = $training_sets[$t][0];
             $training_outputs = $training_sets[$t][1];
-           // echo 'Output original ' . $training_outputs;
             $this->feed_forward($training_inputs);
-            //echo ' Output calculado ';
-            //print_r($this->feed_forward($training_inputs));
-            //echo "<br>" . PHP_EOL;
             for ($o=0; $o < count($training_outputs); $o++) { 
-                $total_error += $this->output_layer->neurons[$o]->calculate_error($training_outputs);
+                $total_error += $this->output_layer->neurons[$o]->calculate_error($training_outputs, $o);
             }
         }
         return $total_error;
@@ -212,12 +208,27 @@ class Neuron
         
         return $this->calculate_pd_error_wrt_output($target_output) * $this->calculate_pd_total_net_input_wrt_input();
     }
-    function calculate_error($target_output)
+    function calculate_error($target_output ,$cont)
     {
         echo 'Target ' . $target_output;
         echo "<br>" . PHP_EOL;
         echo 'Output: ' . $this->outputs;
         echo "<br>" . PHP_EOL;
+        $red=0;
+        if ($this->outputs<=0.33)
+            $red = 0;
+        else if ($this->outputs<=0.66)
+            $red = 0.5;
+        else
+            $red = 1;
+
+        $update = db_insert('pronosticos')
+            ->fields(array(
+                'id_partido' => ($jornada*100)+$cont,
+                'pronostico' => $this->outputs,
+                'pronostico_estimado' => $red,
+                ))
+            ->execute();
         return 0.5 * pow(($target_output - $this->outputs), 2);
     }
     function calculate_pd_error_wrt_output($target_output)
@@ -233,32 +244,138 @@ class Neuron
         return $this->inputs[$index];
     }
 }
-/*
-$nn = new NeuralNetwork(2,2,2);
-for ($i=0; $i <10000; $i++) { 
-    $nn->train([0.05, 0.1], [0.01, 0.99]);
-    echo $i . ' ' . round($nn->calculate_total_error([[[0.05,0.1], [0.01,0.99]]]),9);
-    echo "<br>" . PHP_EOL;
 
-}
-*/
 /**
 Se encarga de generar instancias para el training set.
 */
 
 
 $training_set = array();
-$jornada = 11;
+$jornada = 12;
 $jornada = $jornada*100;
-$jor_Aux = 11;
-for ($j=$jornada+1; $j <=$jornada+10; $j++) { 
+$jor_Aux = 12;
+for ($j=$jornada+1; $j <=$jornada+1; $j++) { 
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
     $local  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();
     $visitante  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id'=>$j))->fetchField();
 
-    $arrayInput = array();
-    //Extraemos las estadísticas del partido disputado.
+    $partido = array($local, $visitante );
+
+    
+
+    foreach ($partido as $equipo) {
+        //Introducimos las instancias de cada equipo
+        $arrayInstancia = array();
+        for ($i=1; $i < $jor_Aux ; $i++) {
+            $arrayInput = array();
+            echo 'El equipo es: ' . $equipo . ' y la jornada es: ' . $i;
+            echo "<br>" . PHP_EOL;
+            //Primero debemos saber si el equipo esa jornada es local o visitante.
+            $local_visitante = db_query('SELECT cj.local_visitante FROM {clasificacion_jornada} cj WHERE cj.jornada = :jornada AND cj.id_equipo = :equipo', array(':jornada'=>$i, ':equipo'=>$equipo))->fetchField();
+
+            if($local_visitante==0)
+                $rival  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.equipo_local = :equipo AND f.jornada = :jornada', array(':equipo'=>$equipo, ':jornada'=>$i))->fetchField();
+            else
+                $rival  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.equipo_visitante = :equipo AND f.jornada = :jornada', array(':equipo'=>$equipo, ':jornada'=>$i))->fetchField();
+
+            echo 'El rival es: ' , $rival;
+
+            //Ya sabemos el rival y la jorndada asi que habrá que estraer los datos de las rachas.
+
+
+
+            $equ = db_select('fecha_jornada','f');
+            $equ->join('partidos', 'p', 'f.id_partido = p.id_partido');
+            $equ->fields('p');
+            $db_or = db_or();
+            $db_or->condition('f.equipo_local', $equipo, '=')
+                ->condition('f.equipo_visitante', $equipo, '=');
+            $equ->condition($db_or)
+                ->condition('f.jornada', $i, '=');
+            $result = $equ->execute();
+
+            //Hayamos el resultado del partido con los goles a favor y en contra.
+            echo "<br>" . PHP_EOL;
+            $goles_fav = 0;
+            $goles_cont = 0;
+            foreach ($result as $key) {
+                $goles_fav = $key->goles_local;
+                $goles_cont = $key->goles_visitante;
+                foreach($key as $k){
+                    if($key->id_partido != $k)
+                        array_push($arrayInput, $k);
+                }
+            }
+
+            //Rachas de ambos equipos:
+            $rachasEquipo = db_select('clasificacion_jornada','cj');
+            $rachasEquipo->fields('cj')
+                ->condition('cj.id_equipo', $equipo, '=')
+                ->condition('cj.jornada' , $i, '=');
+            $resultEquipo = $rachasEquipo->execute();
+
+            $rachasRival = db_select('clasificacion_jornada','cj');
+            $rachasRival->fields('cj')
+                ->condition('cj.id_equipo', $equipo, '=')
+                ->condition('cj.jornada' , $i, '=');
+            $resultRival= $rachasRival->execute();
+
+            if ($local_visitante == 0){
+                foreach ($resultEquipo as $key) {
+                    foreach($key as $k => $valor){
+                        if($k!='id_equipo' AND $k != 'jornada')
+                            array_push($arrayInput, $valor);
+                    }
+                }
+                foreach ($resultRival as $key) {
+                    foreach($key as $k => $valor){
+                        if($k!='id_equipo' AND $k != 'jornada')
+                            array_push($arrayInput, $valor);
+                    }
+                }
+
+            }else{
+                foreach ($resultRival as $key) {
+                    foreach($key as $k => $valor){
+                        if($k!='id_equipo' AND $k != 'jornada')
+                            array_push($arrayInput, $valor);
+                    }
+                }
+                foreach ($resultEquipo as $key) {
+                    foreach($key as $k => $valor){
+                        if($k!='id_equipo' AND $k != 'jornada')
+                            array_push($arrayInput, $valor);
+                    }
+                }
+            }
+            //Ahora ponemos el ouput, el cual depende del resultado del partido.
+            $output = 0;
+            if ($goles_fav>$goles_cont)
+                $output = 0;
+            else if ($goles_fav==$goles_cont)
+                $output = 0.5;
+            else
+                $output = 1;
+
+            $arrayAux = array();
+            array_push($arrayAux, $arrayInput);
+            array_push($arrayAux, $output);
+            //Finalmente creamos la instancia con el arrayAux.
+            array_push($arrayInstancia, $arrayAux);
+        }
+        echo 'Array instancia es: ';
+        print_r($arrayInstancia);
+        
+    }
+}
+/*
+    //Ya tenemos los equipos que van a disputar el partido.
+   
+
+    //para cada partido extraemos los datos del local y del visitante.
+
+    //Extraemos las estadísticas del los partidos disputados del equipo local
     $selectPar = db_select('fecha_jornada','f');
     $selectPar->join('partidos', 'p', 'f.id_partido = p.id_partido');
     $selectPar->fields('p')
@@ -273,10 +390,10 @@ for ($j=$jornada+1; $j <=$jornada+10; $j++) {
     foreach ($resultPar as $key) {
         $goles_fav = $key->goles_local;
         $goles_cont = $key->goles_visitante;
-       /* foreach($key as $k){
+        foreach($key as $k){
             if($key->id_partido != $k)
                 array_push($arrayInput, $k);
-        }*/
+        }
     }
     $selectLoc = db_select('clasificacion_jornada','cj');
     $selectLoc->fields('cj')
@@ -318,14 +435,13 @@ for ($j=$jornada+1; $j <=$jornada+10; $j++) {
     $arrayInstancia = array();
     array_push($arrayInstancia, $arrayInput);
     array_push($arrayInstancia, $output);
-    echo "<br>" . PHP_EOL;
-    /*
+    
     echo '[[ ';
     foreach ($arrayInput as $value) {
         echo $value . ' ,';
     }
     echo '], [' . $output . ']] ,';
-*/
+
     array_push($training_set, $arrayInstancia);
 }
 
@@ -333,16 +449,16 @@ for ($j=$jornada+1; $j <=$jornada+10; $j++) {
 
 $training_inputs = array();
 $training_outputs = array();
-$nn = new NeuralNetwork(sizeof($training_set[0][0]), 5 , sizeof($training_set[0][1]));
-for ($i=0; $i <10000; $i++) {
+$nn = new NeuralNetwork(sizeof($training_set[0][0]), 3 , sizeof($training_set[0][1]));
+for ($i=0; $i <1000; $i++) {
     $random = rand(0, sizeof($training_set));
     $training_inputs = $training_set[$random][0];
     $training_outputs = $training_set[$random][1];
     $nn->train($training_inputs,$training_outputs);
-    echo $i . ' ' . $nn->calculate_total_error($training_set);
-    echo "<br>" . PHP_EOL;
 }
-
+echo $i . ' ' . $nn->calculate_total_error($training_set);
+echo "<br>" . PHP_EOL;
+*/
 /*
 $training_set = array(
     array(array(0,0),0),
