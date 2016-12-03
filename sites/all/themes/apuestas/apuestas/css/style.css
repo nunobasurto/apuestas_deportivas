@@ -1,0 +1,64 @@
+header#navbar {
+  margin-top: 0px;
+  border: none;
+  background: none;
+  min-height: 150px;
+  background: url('../images/fondo.png');
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+nav {
+  font-size: 18px;
+}
+.navbar-default {
+  margin-top: 25px;
+  background: none;
+}
+.navbar-default .navbar-nav > .active > a {
+  background: #329ef1;
+  border: none;
+  color: #FFF;
+}
+.navbar-default .navbar-nav > .active > a:hover {
+  background: #91cbf8;
+  border: none;
+}
+.navbar-default .navbar-nav > .active > a:focus {
+  background: #91cbf8;
+  border: none;
+}
+.navbar-default .navbar-nav > li > a {
+  background: none;
+  color: #329ef1;
+  margin: 0px 5px;
+}
+.navbar-default .navbar-nav > li > a:hover {
+  background: none;
+  border-bottom: none;
+}
+.navbar-default .navbar-nav {
+  padding-top: 35px;
+}
+a {
+  color: #329ef1;
+  text-decoration: none;
+}
+a:hover {
+  color: #329ef1;
+  text-decoration: underline;
+}
+.footer {
+  background: #d0e9fc;
+  heigth: auto;
+  min-height: 100px;
+  color: #222222;
+  width: 100%;
+}
+.footer a {
+  color: #222222;
+  text-decoration: underline;
+}
+.footer a:hover {
+  color: #222222;
+}

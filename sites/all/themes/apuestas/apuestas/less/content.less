@@ -1,0 +1,81 @@
+//Variables modified
+@import 'variables.less';
+@import 'misVariables.less';
+
+// Insert your styling here.
+header#navbar{
+	margin-top:0px;
+	border:none;
+	background:none;
+	min-height:140px;
+	background: url('../images/fondo.png');
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+// MENU
+nav {
+	font-size:@font-size-h4;
+}
+
+.navbar-default {
+	margin-top:25px;
+	background:none;
+	.navbar-nav>.active>a{
+			background:@brand-primary;
+			border:none;
+			color:#FFF; 
+		&:hover{
+			background:@navbar-default-link-active-bg;
+			border:none;
+		}
+		&:focus{
+			background:@navbar-default-link-active-bg;
+			border:none;
+		}
+	}	
+	.navbar-nav>li>a{
+			background:none;
+			color:@navbar-default-link-color;
+			margin:0px 5px;
+		&:hover{
+			background:none;
+			border-bottom:none; 
+		}
+	}
+	.navbar-nav {
+		padding-top:35px;
+	}
+}
+
+//ENLACES
+a {
+	color:@brand-primary;
+	text-decoration:none;
+	&:hover{
+		color:@brand-primary;
+		text-decoration:underline;
+	}
+}
+
+//FOOTER
+.footer{
+	background:lighten(@brand-primary,15%);
+	heigth:auto;
+	min-height:100px;
+	color:@gray-darker;
+	width:100%;
+	a{
+		color:@gray-darker;
+		text-decoration:underline;	
+		&:hover{
+			color:@gray-darker;
+		}
+	}
+}
+
+
+
+
+
+
