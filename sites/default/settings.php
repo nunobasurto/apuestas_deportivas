@@ -272,6 +272,7 @@ $databases = array (
  * TRUE back to a FALSE!
  */
 $update_free_access = FALSE;
+ini_set('error_reporting', 'E_ALL ^ E_NOTICE');
 
 /**
  * Salt for one-time login links and cancel links, form tokens, etc.
