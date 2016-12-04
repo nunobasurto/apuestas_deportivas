@@ -251,12 +251,10 @@ Se encarga de generar instancias para el training set.
 
 
 $training_set = array();
+$test_set = array();
 $jornada = 12;
 $jornada = $jornada*100;
 $jor_Aux = 12;
-$arrayRachaLocal = array();
-$arrayRachaVisitante = array();
-$test_set = array();
 for ($j=$jornada+1; $j <=$jornada+1; $j++) {
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
@@ -366,6 +364,10 @@ for ($j=$jornada+1; $j <=$jornada+1; $j++) {
             //Finalmente creamos la instancia con el arrayAux.
             array_push($arrayInstancia, $arrayAux);
         }
+        //Introducimos la instancia del equipo en el training. 
+        foreach ($arrayInstancia as $instancia) {
+            array_push($training_set, $instancia);
+        } 
     }
     //La normalizacion debemos empezarla aquí ya que este es el punto en el cual tenemos todas las instancias juntas.
     for ($c=0; $c < sizeof($training_set[0][0]); $c++) { 
@@ -375,62 +377,52 @@ for ($j=$jornada+1; $j <=$jornada+1; $j++) {
             $valMax=max($training_set[$f][0][$c], $valMax);
             $valMin=min($training_set[$f][0][$c], $valMin);
         }
-        for ($f=0; $f < sizeof($training_set; $f++) {
+
+        for ($f=0; $f < sizeof($training_set); $f++) {
             if($valMax!=0) 
                 $training_set[$f][0][$c]=round(($training_set[$f][0][$c]-$valMin)/($valMax-$valMin), 3);
             else
                 $training_set[$f][0][$c]= 0;
         }
     }
-    array_push($test, $training_set[sizeof($arrayInstancia)/2-2]);
-    array_push($test, $training_set[sizeof($arrayInstancia)-2]);
-     //Sacamos del array de Instancia la penultima fila.
+    //Extreamos la penultima jornada como local/visitante de cada equipo
+    array_push($test_set, $training_set[sizeof($training_set)/2-2]);
+    array_push($test_set, $training_set[sizeof($training_set)-2]);
+
+    //Sacamos para no tenerlas en cuenta en el training.
     array_splice($training_set,sizeof($training_set)-2,1);
     array_splice($training_set,sizeof($training_set)/2-2,1);
-
-        //Si la clave es 0 es que estamos tratando con el equipo local;
-        //Extraemos las rachas para su posterior inserción.
-        if ($clave == 0){
-            for ($p=30; $p <54 ; $p++) { 
-                array_push($arrayRachaLocal, $arrayInstancia[sizeof($arrayInstancia)-1][0][$p]);
-            }
-        }
-        else{
-            for ($p=54; $p <78 ; $p++) { 
-                array_push($arrayRachaVisitante, $arrayInstancia[sizeof($arrayInstancia)-1][0][$p]);
-            } 
-        }
-
-
-        $test[1]=null;
-        array_push($test_set, $test);
-        foreach ($arrayInstancia as $instancia) {
-            array_push($training_set, $instancia);
-        } */   
-
-
-    
-    for ($p=30; $p <54 ; $p++) { 
-        $test_set[0][0][$p] = $arrayRachaLocal[$p-30];
-        $test_set[1][0][$p] = $arrayRachaLocal[$p-30];
+    //Extraemos las rachas para su posterior inserción.
+    for ($v=30; $v <54 ; $v++) { 
+        $test_set[0][0][$v] = $training_set[sizeof($training_set)/2-1][0][$v];
+        $test_set[1][0][$v] = $training_set[sizeof($training_set)/2-1][0][$v];
     }
-    for ($p=54; $p <78 ; $p++) { 
-        $test_set[0][0][$p] = $arrayRachaLocal[$p-54];
-        $test_set[1][0][$p] = $arrayRachaLocal[$p-54];
+    for ($v=54; $v <78 ; $v++) { 
+        $test_set[0][0][$v] = $training_set[sizeof($training_set)-1][0][$v];
+        $test_set[1][0][$v] = $training_set[sizeof($training_set)-1][0][$v];
     }
-    //echo 'Array train es; ';
-    //print_r($training_set);
-
-    //Aquí debemos ejecutar el algoritmo para el partido actual.
+    //Quitamos los posibles resultados de los partidos ya que son los valores a predecir.
+    unset($test_set[0][1]);
+    unset($test_set[1][1]);
 
     $training_inputs = array();
     $training_outputs = array();
 
     echo 'Training set: ';
     print_r($training_set);
+    /*echo '[[ ';
+    for ($pr=0; $pr < sizeof($training_set); $pr++) {
+        echo '[';
+        for ($w=0; $w < sizeof($training_set[0][0]); $w++) { 
+            echo $training_set[$pr][0][$w]. ', ';
+        } 
+        echo '] , [' . $training_set[$pr][1] . ']] ,';
+        echo "<br>" . PHP_EOL;
+    }
+    echo ']';*/
 
-    $nn = new NeuralNetwork(sizeof($training_set[0][0]), 5 , sizeof($training_set[0][1]));
-    for ($i=0; $i <1000; $i++) {
+    $nn = new NeuralNetwork(sizeof($training_set[0][0]), 39 , sizeof($training_set[0][1]));
+    for ($i=0; $i <1000 ; $i++) {
         $random = rand(0, sizeof($training_set));
         $training_inputs = $training_set[$random][0];
         $training_outputs = $training_set[$random][1];
@@ -444,96 +436,6 @@ for ($j=$jornada+1; $j <=$jornada+1; $j++) {
         $nn->train($test_set[$i][0], $test_set[$i][1]);
     }*/
 }
-/*
-    //Ya tenemos los equipos que van a disputar el partido.
-   
-
-    //para cada partido extraemos los datos del local y del visitante.
-
-    //Extraemos las estadísticas del los partidos disputados del equipo local
-    $selectPar = db_select('fecha_jornada','f');
-    $selectPar->join('partidos', 'p', 'f.id_partido = p.id_partido');
-    $selectPar->fields('p')
-            ->fields('f', array('jornada'))
-            ->condition('f.equipo_local', $local, '=')
-            ->condition('f.equipo_visitante' , $visitante, '=');
-    $resultPar = $selectPar->execute();
-
-    $goles_fav = 0;
-    $goles_cont = 0;
-
-    foreach ($resultPar as $key) {
-        $goles_fav = $key->goles_local;
-        $goles_cont = $key->goles_visitante;
-        foreach($key as $k){
-            if($key->id_partido != $k)
-                array_push($arrayInput, $k);
-        }
-    }
-    $selectLoc = db_select('clasificacion_jornada','cj');
-    $selectLoc->fields('cj')
-        ->condition('cj.id_equipo', $local, '=')
-        ->condition('cj.jornada' , $jor_Aux, '=');
-    $resultLoc = $selectLoc->execute();
-
-    
-    
-
-    foreach ($resultLoc as $key) {
-            foreach($key as $k => $valor){
-                if($k!='id_equipo' AND $k != 'jornada')
-                  array_push($arrayInput, $valor);       
-        }
-    }
-
-    $selectVis = db_select('clasificacion_jornada','cj');
-    $selectVis->fields('cj')
-        ->condition('cj.id_equipo', $visitante, '=')
-        ->condition('cj.jornada' , $jor_Aux, '=');
-    $resultVis = $selectVis->execute();
-    
-    foreach ($resultVis as $key) {
-        foreach($key as $k => $valor){
-                if($k!='id_equipo' AND $k != 'jornada')
-                    array_push($arrayInput, $valor);
-        }
-    }
-
-    $output = 0;
-    if ($goles_fav>$goles_cont)
-        $output = 0;
-    else if ($goles_fav==$goles_cont)
-        $output = 0.5;
-    else
-        $output = 1;
-
-    $arrayInstancia = array();
-    array_push($arrayInstancia, $arrayInput);
-    array_push($arrayInstancia, $output);
-    
-    echo '[[ ';
-    foreach ($arrayInput as $value) {
-        echo $value . ' ,';
-    }
-    echo '], [' . $output . ']] ,';
-
-    array_push($training_set, $arrayInstancia);
-}
-
-
-
-$training_inputs = array();
-$training_outputs = array();
-$nn = new NeuralNetwork(sizeof($training_set[0][0]), 3 , sizeof($training_set[0][1]));
-for ($i=0; $i <1000; $i++) {
-    $random = rand(0, sizeof($training_set));
-    $training_inputs = $training_set[$random][0];
-    $training_outputs = $training_set[$random][1];
-    $nn->train($training_inputs,$training_outputs);
-}
-echo $i . ' ' . $nn->calculate_total_error($training_set);
-echo "<br>" . PHP_EOL;
-*/
 /*
 $training_set = array(
     array(array(0,0),0),
