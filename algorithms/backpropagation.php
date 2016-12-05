@@ -12,7 +12,7 @@ class NeuralNetwork
     public $hidden_layer_bias=array();
     public $output_layer_weights=array();
     public $output_layer_bias=array();
-    public $learning_rate = 0.5;
+    public $learning_rate = 0.15;
     public $hidden_layer;
     public $output_layer;
     //, $hidden_layer_weights = null, $hidden_layer_bias = null, $output_layer_weights = null, $output_layer_bias = null)
@@ -33,9 +33,10 @@ class NeuralNetwork
             for ($i=0; $i<$this->num_inputs; $i++) {
                 if(empty($hidden_layer_weights))
                 {
-                    array_push($this->hidden_layer->neurons[$h]->weights, (float)rand()/(float)getrandmax());
-                    //print_r($this->hidden_layer->neurons[$h]->weights);
-                    //echo "<br>" . PHP_EOL;
+                    //array_push($this->hidden_layer->neurons[$h]->weights, (float)rand()/(float)getrandmax());
+                    $min = -0.35;
+                    $max = 0.35;
+                    array_push($this->hidden_layer->neurons[$h]->weights, $min + lcg_value() * abs($max - $min));
                 }
                 else
                 {
@@ -54,9 +55,10 @@ class NeuralNetwork
             for ($i=0; $i<count($this->hidden_layer->neurons); $i++)
             {
                 if(empty($output_layer_weights)){
-                     array_push($this->output_layer->neurons[$h]->weights, (float)rand()/(float)getrandmax());
-                    //print_r($this->output_layer->neurons[$h]->weights);
-                    //echo "<br>" . PHP_EOL;
+                     //array_push($this->output_layer->neurons[$h]->weights, (float)rand()/(float)getrandmax());
+                    $min = -0.35;
+                    $max = 0.35;
+                    array_push($this->output_layer->neurons[$h]->weights, $min + lcg_value() * abs($max - $min));
                  }
                 else
                     array_push($this->output_layer->neurons[$h]->weights,$output_layer_weights[$cont]);
@@ -119,6 +121,12 @@ class NeuralNetwork
             }
         }
         
+    }
+    function test($inputs)
+    {
+        $val = $this->feed_forward($inputs);
+
+        return $val;
     }
     function calculate_total_error($training_sets)
     {
@@ -202,6 +210,7 @@ class Neuron
     function squash($total_net_input)
     {
         return 1/(1+ exp(-$total_net_input));
+        //return tanh($total_net_input);
     }
     function calculate_pd_error_wrt_total_net_input($target_output)
     {
@@ -255,7 +264,7 @@ $test_set = array();
 $jornada = 12;
 $jornada = $jornada*100;
 $jor_Aux = 12;
-for ($j=$jornada+1; $j <=$jornada+1; $j++) {
+for ($j=$jornada+1; $j <=$jornada+2; $j++) {
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
     $local  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();
@@ -265,9 +274,13 @@ for ($j=$jornada+1; $j <=$jornada+1; $j++) {
 
     $arrayRachaLocal = array();
     $arrayRachaVisitante = array();
+    echo "<br>" . PHP_EOL;
+    echo "<br>" . PHP_EOL;
+    echo 'Los equipos son: ' . $partido[0] . ' ' . $partido[1];
 
     foreach ($partido as $clave => $equipo) {
         //Introducimos las instancias de cada equipo
+        
 
         $arrayInstancia = array();
         for ($i=1; $i < $jor_Aux ; $i++) {
@@ -356,6 +369,7 @@ for ($j=$jornada+1; $j <=$jornada+1; $j++) {
                 $output = 0.5;
             else
                 $output = 1;
+
             //En este punto debemos normalizar el array Input, antes de introducir la instancia.
 
             $arrayAux = array();
@@ -408,33 +422,76 @@ for ($j=$jornada+1; $j <=$jornada+1; $j++) {
     $training_inputs = array();
     $training_outputs = array();
 
-    echo 'Training set: ';
-    print_r($training_set);
-    /*echo '[[ ';
-    for ($pr=0; $pr < sizeof($training_set); $pr++) {
-        echo '[';
-        for ($w=0; $w < sizeof($training_set[0][0]); $w++) { 
-            echo $training_set[$pr][0][$w]. ', ';
-        } 
-        echo '] , [' . $training_set[$pr][1] . ']] ,';
+    //Hacemos tres iteraciones para extraer el valor medio que finalmente obtenemos
+    $valorMedLoc = array();
+    $valorMedVis = array();
+    for ($rep=0; $rep < 3; $rep++) { 
+    
+        $nn = new NeuralNetwork(sizeof($training_set[0][0]),15, sizeof($training_set[0][1]));
+        for ($i=0; $i <3000; $i++) {
+            $random = rand(0, sizeof($training_set));
+            $training_inputs = $training_set[$random][0];
+            $training_outputs = $training_set[$random][1];
+            $nn->train($training_inputs,$training_outputs);
+        }
+        //echo $i . ' ' . $nn->calculate_total_error($training_set);
         echo "<br>" . PHP_EOL;
+        echo "<br>" . PHP_EOL;
+        $valorPredicho = $nn->test($test_set[0][0]);
+        print_r($valorPredicho);
+        array_push($valorMedLoc, $valorPredicho[0]);
+        $valorPredicho2 = $nn->test($test_set[1][0]);
+        print_r($valorPredicho2);
+        array_push($valorMedVis, $valorPredicho2[0]);
     }
-    echo ']';*/
+    $medLoc = ($valorMedLoc[0] + $valorMedLoc[1] + $valorMedLoc[2]) /3;
+    $medVis = ($valorMedVis[0] + $valorMedVis[1] + $valorMedVis[2]) /3;
+    echo 'El valor es: ' . $medLoc;
+    echo 'El valor es: ' . $medVis;
+    //Dependiendo el valor obtenido los colocamos en tres sectores diferentes
+    //[0, 0.33) -> 1 ; [0.33 , 0,66) -> X ; [0.66 , 1] -> 2
+    $estimLoc;
+    $estimVis;
+    $estimFinal;
 
-    $nn = new NeuralNetwork(sizeof($training_set[0][0]), 39 , sizeof($training_set[0][1]));
-    for ($i=0; $i <1000 ; $i++) {
-        $random = rand(0, sizeof($training_set));
-        $training_inputs = $training_set[$random][0];
-        $training_outputs = $training_set[$random][1];
-        $nn->train($training_inputs,$training_outputs);
+    if ($medLoc<0.33)
+        $estimLoc = "1";
+    else if ($medLoc<0.66)
+        $estimLoc = "X";
+    else
+        $estimLoc = "2";
+
+    if ($medVis<0.33)
+        $estimVis = "1";
+    else if ($medLoc<0.66)
+        $estimVis = "X";
+    else
+        $estimVis = "2";
+
+    if ($estimLoc == $estimVis)
+        $estimFinal = $estimLoc;
+    else{
+        if (($estimLoc == "1" AND $estimVis == "2") OR ($estimLoc == "2" AND $estimVis == "1"))
+            $estimFinal = "X";
+        else{
+            $media = ($medLoc+$medVis)/2;
+            if ($media<0.33)
+                $estimFinal = "1";
+            else if ($media<0.66)
+                $estimFinal = "X";
+            else
+                $estimFinal = "2";
+        }
     }
-    echo $i . ' ' . $nn->calculate_total_error($training_set);
-    echo "<br>" . PHP_EOL;
-    echo "<br>" . PHP_EOL;
-    echo "<br>" . PHP_EOL;
-    /*for ($i = 0; $i <2 ;i++){
-        $nn->train($test_set[$i][0], $test_set[$i][1]);
-    }*/
+    $insert = db_insert('pronosticos')
+            ->fields(array(
+                'id_partido' => $j,
+                'pronostico_local' => $medLoc,
+                'pronostico_visitante' => $medVis,
+                'pronostico_estimado'=> $estimFinal,
+                ))
+            ->execute();
+//echo $i . ' ' . $nn->calculate_total_error($test_set);
 }
 /*
 $training_set = array(
@@ -443,6 +500,8 @@ $training_set = array(
     array(array(1,0),1),
     array(array(1,1),0)
     );
+$test_set = array(
+    array(array(0,1)));
 
 $nn = new NeuralNetwork(sizeof($training_set[0][0]), 5, sizeof($training_set[0][1]));
 for ($i=0; $i <10000; $i++) {
@@ -450,8 +509,15 @@ for ($i=0; $i <10000; $i++) {
     $training_inputs = $training_set[$random][0];
     $training_outputs = $training_set[$random][1];
     $nn->train($training_inputs,$training_outputs);
-    echo $i . ' ' . $nn->calculate_total_error($training_set);
-    echo "<br>" . PHP_EOL;
 }
+echo $i . ' ' . $nn->calculate_total_error($training_set);
+
+echo "<br>" . PHP_EOL;
+echo 'llego';
+echo "<br>" . PHP_EOL;
+$valorPredicho = $nn->test($test_set[0][0]);
+print_r($valorPredicho);
+//echo $i . ' ' . $nn->calculate_total_error($test_set);
+echo "<br>" . PHP_EOL;
 */
 ?>
