@@ -261,10 +261,10 @@ Se encarga de generar instancias para el training set.
 
 $training_set = array();
 $test_set = array();
-$jornada = 13;
+$jornada = 15;
 $jornada = $jornada*100;
-$jor_Aux = 13;
-for ($j=$jornada+7; $j <=$jornada+9; $j++) {
+$jor_Aux = 15;
+for ($j=$jornada+9; $j <=$jornada+10; $j++) {
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
     $local  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();
@@ -440,7 +440,7 @@ for ($j=$jornada+7; $j <=$jornada+9; $j++) {
     for ($rep=0; $rep < 3; $rep++) { 
     
         $nn = new NeuralNetwork(sizeof($training_set[0][0]),15, sizeof($training_set[0][1]));
-        for ($i=0; $i <2000; $i++) {
+        for ($i=0; $i <3000; $i++) {
             $random = rand(0, sizeof($training_set));
             $training_inputs = $training_set[$random][0];
             $training_outputs = $training_set[$random][1];

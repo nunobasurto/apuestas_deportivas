@@ -5,7 +5,7 @@ require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 
-for($k =100; $k<=1100; $k+=100){
+for($k =1400; $k<=1400; $k+=100){
 for ($i = 1; $i <= 10; $i++) {
     $id = $k + $i;
     //Empiezan los Selects para extraer informacion del partido.

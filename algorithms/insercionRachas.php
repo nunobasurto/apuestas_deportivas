@@ -1,12 +1,11 @@
 <?php
-//Tomemos el Betis como ejemplo y calculemos para su partido de la jornada 12 contra Las Palmas.
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 //Recibimos la jornada actual, en nuestro caso la 12.
-$jornada=11;
-$jorAux=11;
+$jornada=14;
+$jorAux=14;
 $jornada = $jornada*100;
 for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
 	//De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
