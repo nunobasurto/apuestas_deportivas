@@ -4,25 +4,30 @@ require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 //Recibimos la jornada actual, en nuestro caso la 12.
+/*
+$tiempo = getdate();
+$currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes = :ff', array(':ff' => $currentTyme))->fetchField();
+*/
 $jornada=14;
-$jorAux=14;
+$jorAux=$jornada;
 $jornada = $jornada*100;
 for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
 	//De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
 	//Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
 	$equipolocal  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();
     $equipovisitante  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id'=>$j))->fetchField();
-   	echo 'El equipolocal es: ' . $equipolocal;
+   	/*echo 'El equipolocal es: ' . $equipolocal;
    	echo "<br>" . PHP_EOL;
    	echo 'El equipo visitante es: ' . $equipovisitante;
-   	echo "<br>" . PHP_EOL;
+   	echo "<br>" . PHP_EOL;*/
 	//calculamos las instancias para cada partido.
 	$partido = array();
 	array_push($partido, $equipolocal);
 	array_push($partido, $equipovisitante);
 	//Instancias para cada equipo.
 	for ($i=0; $i < sizeof($partido); $i++) { 
-		echo "Equipo es: ", $partido[$i];
+		//echo "Equipo es: ", $partido[$i];
 
 		$local = db_select('fecha_jornada','f');
 		$local->join('partidos', 'p', 'f.id_partido = p.id_partido');
@@ -94,7 +99,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 			->condition('jornada', $jorAux, '=')
 			->execute();
 
-
+		/*
 		print_r($jornadas);
 		echo "<br>" . PHP_EOL;
 		echo 'Puntos: ';
@@ -107,6 +112,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		print_r($goles_contra);
 		echo "<br>" . PHP_EOL;
 		echo "<br>" . PHP_EOL;
+		*/
 	}
 }
 

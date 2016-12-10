@@ -3,22 +3,28 @@
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-
-
-for($k =1400; $k<=1400; $k+=100){
+/*
+$tiempo = getdate();
+$currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues = :ff', array(':ff' => $currentTyme))->fetchField();*/
+$jornada = 14;
+$jor = $jornada*100;
+/*
+Recorremos todos los partidos de la jornada
+*/
 for ($i = 1; $i <= 10; $i++) {
-    $id = $k + $i;
-    //Empiezan los Selects para extraer informacion del partido.
-    $jornada = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id' => $id))->fetchField();
+    $id = $jor + $i;
+    //Extreaemos los equipos local y visitante para utilizarlos en la url.
     $equipolocal  = db_query('SELECT e.nombre FROM {fecha_jornada} f, {equipos} e WHERE f.id_partido = :id AND f.equipo_local = e.id_equipo', array(':id' => $id))->fetchField();
     $equipovisitante  = db_query('SELECT e.nombre FROM {fecha_jornada} f, {equipos} e WHERE f.id_partido = :id AND f.equipo_visitante = e.id_equipo', array(':id'=>$id))->fetchField();
-    
+    //Generamos dos arrays vacíos donde iremos metiendo los datos.
     $local= array();
     $visitante = array();
     for ($j=0; $j<=15; $j++){
         $local[$j]=0;
         $visitante[$j] = 0;
     }
+    //Establecemos la url como un String.
 	$url = 'http://www.resultados-futbol.com/partido/'. $equipolocal .'/'.$equipovisitante;
     $source = file_get_contents($url);
  	libxml_use_internal_errors(true);
@@ -29,9 +35,10 @@ for ($i = 1; $i <= 10; $i++) {
  	$trs = $html->getElementsByTagName("tr");
  	$ul = $html->getElementsByTagName("ul");
 
- 	$arbitro = $html->getElementsByTagName("span")->item(45)->nodeValue;
- 	echo ' arbitro ' . $arbitro;
+ 	/*$arbitro = $html->getElementsByTagName("span")->item(45)->nodeValue;
+ 	echo ' arbitro ' . $arbitro;*/
  	$flag = true;
+ 	//Extraemos los valores que encontramos en la web y los almacenamos en los arrays.
  	foreach($trs as $tr){
  		$nameStat = $tr->getElementsByTagName("h6")->item(0)->nodeValue;
  		if(!empty($nameStat)) {
@@ -97,11 +104,7 @@ for ($i = 1; $i <= 10; $i++) {
  			}
 		}
 	}
-	echo "<br>" . PHP_EOL;
-	print_r($local);
-	echo "<br>" . PHP_EOL;
-	print_r($visitante);
-	
+	//Insertamos en la base de datos los valores individualmente.
 	$insert = db_insert('partidos')
 	->fields(array(
 	'id_partido' => $id,
@@ -136,7 +139,6 @@ for ($i = 1; $i <= 10; $i++) {
 	'faltas_local' => $local[14],
 	'faltas_visitante' => $visitante[14],
 	))
-	->execute();
-	} 
+	->execute(); 
 }
 ?>

@@ -2,7 +2,12 @@
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-
+//Obetenemos la jornada para que el demonio ejecute el algoritmo.
+/*
+$tiempo = getdate();
+$currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues = :ff', array(':ff' => $currentTyme))->fetchField();
+*/
 $jornada = 13;
 $jornada = $jornada*100;
 
@@ -38,6 +43,7 @@ for ($i=$jornada+1; $i <=$jornada+10; $i++) {
 }
 $sumatorio = 0;
 foreach($mostrar as $id=>$partido){
+	echo "<br>" . PHP_EOL;
 	$equipolocal  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $id))->fetchField();
     $equipovisitante  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id'=>$id))->fetchField();
 
@@ -57,11 +63,12 @@ foreach($mostrar as $id=>$partido){
 	if ($resolucion=="ACIERTO"){
 		$mejor = extraer_mejor_cuota($pronostico, $partido);
 		echo 'Mejor: ' . $mejor;
+		echo "<br>" . PHP_EOL;
 		$sumatorio += $mejor;
 	}
 	else
 		$sumatorio -= 1;
-	echo "<br>" . PHP_EOL;
+	
 	foreach ($partido as $casa_apuestas){
 		foreach ($casa_apuestas as $casa=>$cuota) {
 

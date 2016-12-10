@@ -74,12 +74,6 @@ class NeuralNetwork
     }
     function train($training_inputs, $training_outputs=null)
     {
-        /*echo ' Training Inputs';
-        print_r($training_inputs);
-        echo "<br>" . PHP_EOL;
-        echo ' Training Outputs';
-        print_r($training_outputs);
-        echo "<br>" . PHP_EOL;*/
         $var= array();
         $this->feed_forward($training_inputs);
         # 1. Output neuron deltass
@@ -230,14 +224,6 @@ class Neuron
             $red = 0.5;
         else
             $red = 1;
-
-        /*$update = db_insert('pronosticos')
-            ->fields(array(
-                'id_partido' => ($jornada*100)+$cont,
-                'pronostico' => $this->outputs,
-                'pronostico_estimado' => $red,
-                ))
-            ->execute();*/
         return 0.5 * pow(($target_output - $this->outputs), 2);
     }
     function calculate_pd_error_wrt_output($target_output)
@@ -261,9 +247,15 @@ Se encarga de generar instancias para el training set.
 
 $training_set = array();
 $test_set = array();
+/*
+$tiempo = getdate();
+$currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes = :ff', array(':ff' => $currentTyme))->fetchField();
+*/
 $jornada = 15;
+$jor_Aux = $jornada;
 $jornada = $jornada*100;
-$jor_Aux = 15;
+
 for ($j=$jornada+9; $j <=$jornada+10; $j++) {
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
@@ -284,7 +276,6 @@ for ($j=$jornada+9; $j <=$jornada+10; $j++) {
             ->condition('cj.id_equipo', $equipo, '=')
             ->condition('cj.local_visitante', $clave, '=');
         $jor = $jornadas->execute();
-        //print_r($jor);
         $jornadas=array();
         foreach ($jor as $key) {
             array_push($jornadas, $key->jornada);
