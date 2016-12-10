@@ -247,16 +247,13 @@ Se encarga de generar instancias para el training set.
 
 $training_set = array();
 $test_set = array();
-/*
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
-$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes = :ff', array(':ff' => $currentTyme))->fetchField();
-*/
-$jornada = 15;
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes > :ff ORDER BY f.fecha_antes asc', array(':ff' => $currentTyme))->fetchField(); 
 $jor_Aux = $jornada;
 $jornada = $jornada*100;
 
-for ($j=$jornada+9; $j <=$jornada+10; $j++) {
+for ($j=$jornada+3; $j <=$jornada+4; $j++) {
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
     $local  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();

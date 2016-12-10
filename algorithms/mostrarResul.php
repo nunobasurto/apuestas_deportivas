@@ -3,14 +3,11 @@ define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 //Obetenemos la jornada para que el demonio ejecute el algoritmo.
-/*
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
-$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues = :ff', array(':ff' => $currentTyme))->fetchField();
-*/
-$jornada = 13;
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues < :ff ORDER BY f.fecha_despues desc', array(':ff' => $currentTyme))->fetchField(); 
 $jornada = $jornada*100;
-
+$arrayCasas = array(' ','BET365','Marca', 'BWIN','888Bet');
 for ($i=$jornada+1; $i <=$jornada+10; $i++) { 
 	$tarifas=db_select('apuestas','a')
 			->fields('a', array('BET365','Marca', 'BWIN','888Bet'))
@@ -57,22 +54,28 @@ foreach($mostrar as $id=>$partido){
 
 	echo $equipolocal . ' ' . $goleslocal .' vs ' . $golesvisitante . ' ' . $equipovisitante;
 	echo ' Pronostico: ' . $pronostico;
+	if($pronostico=="1")
+		$pronos = 0;
+	else if($pronostico=="x")
+		$pronos = 1;
+	else
+		$pronos = 2;
 	$resolucion = compara_resultados($goleslocal, $golesvisitante, $pronostico);
 	echo ' ' . $resolucion;
 	echo "<br>" . PHP_EOL;
 	if ($resolucion=="ACIERTO"){
 		$mejor = extraer_mejor_cuota($pronostico, $partido);
-		echo 'Mejor: ' . $mejor;
-		echo "<br>" . PHP_EOL;
+		echo 'Mejor: ' . $mejor . "<br>";
 		$sumatorio += $mejor;
 	}
 	else
 		$sumatorio -= 1;
 	
-	foreach ($partido as $casa_apuestas){
+	foreach ($partido as $casa=>$casa_apuestas){
+		echo $arrayCasas[$casa-($id*10)];
 		foreach ($casa_apuestas as $casa=>$cuota) {
-
-			echo $cuota . ' ';
+			if($casa==$pronos)
+				echo "\t" . $cuota . ' ';
 		}
 		echo "<br>" . PHP_EOL;
 	}

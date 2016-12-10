@@ -2,10 +2,9 @@
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-/*$tiempo = getdate();
+$tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
-$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes = :ff', array(':ff' => $currentTyme))->fetchField();*/
-$jornada = 14;
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues < :ff ORDER BY f.fecha_despues desc', array(':ff' => $currentTyme))->fetchField(); 
 $url = 'http://www.resultados-futbol.com/primera/grupo1/jornada' . "$jornada";
 $source = file_get_contents($url);
 libxml_use_internal_errors(true);

@@ -1,17 +1,12 @@
 <?php
+define('DRUPAL_ROOT', getcwd());
+require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
+drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
-echo $currentTyme;
+$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues < :ff ORDER BY f.fecha_despues desc', array(':ff' => $currentTyme))->fetchField(); 
 
-
-$fechaFiciticia  = "2016-12-09 00:00:00";
-
-if ($fechaFiciticia == $fecha){
-	echo "eSto";
-	$jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes = :ff', array(':ff' => $fechaFiciticia))->fetchField();
-	echo 'La jornada es: ' . $jornada;
-}
-
+echo $jornada;
 
 ?>
