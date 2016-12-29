@@ -215,10 +215,10 @@ class Neuron
     }
     function calculate_error($target_output ,$cont)
     {
-        echo 'Target ' . $target_output;
+        /*echo 'Target ' . $target_output;
         echo "<br>" . PHP_EOL;
         echo 'Output: ' . $this->outputs;
-        echo "<br>" . PHP_EOL;
+        echo "<br>" . PHP_EOL;*/
         $red=0;
         if ($this->outputs<=0.33)
             $red = 0;
@@ -255,11 +255,12 @@ $test_set = array();
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
 $jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes > :ff ORDER BY f.fecha_antes asc', array(':ff' => $currentTyme))->fetchField();
+$jornada=15;
 $jor_Aux = $jornada;
 $jornada = $jornada*100;
 
 //$j = $jornada + $part;
-for ($j=$jornada + 1; $j <= -100 + $jornada + 10; $j++) { 
+for ($j=$jornada + 1; $j <= $jornada + 10; $j++) { 
     # code...
 
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
@@ -436,7 +437,7 @@ for ($j=$jornada + 1; $j <= -100 + $jornada + 10; $j++) {
     for ($rep=0; $rep < 3; $rep++) { 
     
         $nn = new NeuralNetwork(sizeof($training_set[0][0]),15, sizeof($training_set[0][1]));
-        for ($i=0; $i <3000; $i++) {
+        for ($i=0; $i <4000; $i++) {
             $random = rand(0, sizeof($training_set));
             $training_inputs = $training_set[$random][0];
             $training_outputs = $training_set[$random][1];
@@ -491,6 +492,7 @@ for ($j=$jornada + 1; $j <= -100 + $jornada + 10; $j++) {
     }
     echo "<br>" . PHP_EOL;
     echo 'Estimacion Final ' . $estimFinal;
+    /*
     $insert = db_insert('pronosticos')
             ->fields(array(
                 'id_partido' => $j,
@@ -499,9 +501,9 @@ for ($j=$jornada + 1; $j <= -100 + $jornada + 10; $j++) {
                 'pronostico_estimado'=> $estimFinal,
                 ))
             ->execute();
-//echo $i . ' ' . $nn->calculate_total_error($test_set);
+            */
 }
-header("Location:/informe-pronostico");
+/*header("Location:/informe-pronostico");
 /*
 $training_set = array(
     array(array(0,0),0),

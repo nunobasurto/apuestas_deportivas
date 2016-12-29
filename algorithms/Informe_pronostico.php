@@ -12,12 +12,12 @@ echo '<table class="table table-hover table-responsive">';
 echo  '<tr>';
 echo     '<td colspan=7><h3>Jornada '.$jornada.'</h3></td>';
 echo   '</tr>';
-echo '<tr>
+echo '<tr align="right">
     <td>Partido</td>
-    <td>Pronóstico</td>
-    <td><img src="images/bet365.png" width="60" height="25" alt="BET365"></td>
+    <td><CENTER>Pronóstico</CENTER></td>
+    <td><img src="images/bet365_2.png" width="60" height="20" alt="BET365"></td>
     <td><img src="images/marcaapuestas.jpeg" width="60" height="20" alt="Marca"></td>
-    <td><img src="images/bwin.png" width="60" height="25" alt="BWIN"></td>
+    <td><img src="images/bwin.jpg" width="60" height="25" alt="BWIN"></td>
     <td><img src="images/888.png" width="40" height="25" alt="888"></td>
 	</tr>';
 $jor_Aux = $jornada;
@@ -36,7 +36,9 @@ for ($i=$jornada+1; $i <=$jornada+10; $i++) {
 		array_push($cuotas, $tarifa->BWIN);
 		array_push($cuotas, end($tarifa));
 		$cuot = array();
-		foreach ($cuotas as $cuota) {
+		$contador=0;
+		foreach ($cuotas as $key=>$cuota) {
+			$contador++;
 			$cu=db_select('Cuotas','c')
 				->fields('c', array('Local','Empate', 'Visitante'))
 				->condition('id_cuota', $cuota, '=')
@@ -44,8 +46,10 @@ for ($i=$jornada+1; $i <=$jornada+10; $i++) {
 			foreach ($cu as $valor) {
 				$insert = array($valor->Local, $valor->Empate, $valor->Visitante);
 			}
-			$cuot[$cuota] = $insert;
-			//$cuot = array($cuota=>$insert);
+			if($cuota!=null)
+				$cuot[$cuota] = $insert;
+			else
+				$cuot[$i*10+$contador] = array(0,0,0);
 		}
 		$mostrar[$i]=$cuot;
 	}
@@ -61,36 +65,34 @@ foreach($mostrar as $id=>$partido){
     $equipovisitante = db_query('SELECT e.nombreCompleto FROM {equipos} e WHERE e.id_equipo = :id', array(':id'=>$equipovisitante))->fetchfield();
 	$pronostico = db_query('SELECT p.pronostico_estimado FROM {pronosticos} p WHERE p.id_partido = :id', array(':id'=>$id))->fetchfield();
 
-	echo '<tr>';
+	echo '<tr align = "right">';
+	
     //echo '<td> <img src=' . $escudolocal .' width="40" height="25" alt="888">-<img src=' . $escudovisitante .' width="40" height="25" alt="888"></td>';
     echo '<td>' . $equipolocal . ' - '. $equipovisitante . '</td>';
-    echo '<td>'.$pronostico.'</td>';
+    echo '<td><CENTER>'.$pronostico.'</CENTER></td>';
 	if($pronostico=="1")
 		$pronos = 0;
 	else if($pronostico=="X")
 		$pronos = 1;
 	else
 		$pronos = 2;
-	//print_r($partido);
 	foreach ($partido as $casa=>$casa_apuestas){
 		foreach ($casa_apuestas as $x12=>$cuota) {
 			if($x12==$pronos){
-				echo '<td>'.$cuota.'</td>';
+				echo '<td>'.number_format($cuota,2).'</td>';
 				$contadores[$casa-($id*10)]+=$cuota;
 			}
 		}
 	}
-
 	echo '</tr>';
 }
 
-echo '<tr>';
-echo '<td> Ganancias Potenciales: </td>';
-echo '<td> </td>';
-echo '<td>'.($contadores[1]).'</td>';
-echo '<td>'.($contadores[2]).'</td>';
-echo '<td>'.($contadores[3]).'</td>';
-echo '<td>'.($contadores[4]).'</td>';
+echo '<tr align = "right">';
+echo '<td colspan="2"><CENTER><b>Ganancias Potenciales:<b></CENTER></td>';
+echo '<td><b>'.number_format($contadores[1],2).'</b></td>';
+echo '<td><b>'.number_format($contadores[2],2).'</b></td>';
+echo '<td><b>'.number_format($contadores[3],2).'</b></td>';
+echo '<td><b>'.number_format($contadores[4],2).'</b></td>';
 echo '</tr>';
 echo '</table>';
 
