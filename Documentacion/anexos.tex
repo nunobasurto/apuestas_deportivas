@@ -298,6 +298,7 @@
 \makeatletter
 \usepackage{xcolor}
 \newcommand{\tutor}[1]{\def\@tutor{#1}}
+\newcommand{\tutorAux}[1]{\def\@tutorAux{#1}}
 \newcommand{\course}[1]{\def\@course{#1}}
 \definecolor{cpardoBox}{HTML}{E6E6FF}
 \def\maketitle{
@@ -329,6 +330,7 @@
     Presentado por \@author{}\\ 
     en Universidad de Burgos --- \@date{}\\
     Tutor: \@tutor{}\\
+        \@tutorAux{}\\
   }%
   \end{center}%
   \null
@@ -338,10 +340,11 @@
 
 
 % Datos de portada
-\title{título del TFG \\Documentación Técnica}
-\author{nombre alumno}
-\tutor{nombre tutor}
-\date{\today}
+\title{Predicción de apuestas deportivas}
+\author{Nuño Basurto Hornillos}
+\tutor{Alvar Arnaiz González}
+\tutorAux{Cristobal José Carmona del Jesús}
+\date{23/01/2017}
 
 \begin{document}
 
