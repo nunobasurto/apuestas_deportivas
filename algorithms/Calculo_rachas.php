@@ -1,5 +1,4 @@
 #!/usr/bin/php
-
 <?php
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
@@ -8,31 +7,26 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
 $jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues <= :ff ORDER BY f.fecha_despues desc', array(':ff' => $currentTyme))->fetchField(); 
-$jorAux=$jornada;
-$jornada = $jornada*100;
-for ($j=$jornada+1; $j <=$jornada+10 ; $j++) { 
+$jor_aux=$jornada*100;
+for ($j=$jor_aux+1; $j <=$jor_aux+10 ; $j++) { 
 	//De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
 	//Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
 	$equipolocal  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $j))->fetchField();
     $equipovisitante  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id'=>$j))->fetchField();
-   	/*echo 'El equipolocal es: ' . $equipolocal;
-   	echo "<br>" . PHP_EOL;
-   	echo 'El equipo visitante es: ' . $equipovisitante;
-   	echo "<br>" . PHP_EOL;*/
-	//calculamos las instancias para cada partido.
+
+	//Calculamos las instancias para cada partido.
 	$partido = array();
 	array_push($partido, $equipolocal);
 	array_push($partido, $equipovisitante);
 	//Instancias para cada equipo.
-	for ($i=0; $i < sizeof($partido); $i++) { 
-		//echo "Equipo es: ", $partido[$i];
+	for ($i=0; $i < sizeof($partido); $i++) {
 
 		$local = db_select('fecha_jornada','f');
 		$local->join('partidos', 'p', 'f.id_partido = p.id_partido');
 		$local->fields('p',array('goles_local', 'goles_visitante'))
 			->fields('f', array('jornada'))
 			->condition('f.equipo_local', $partido[$i], '=')
-			->condition('f.jornada' , $jorAux, '<=');
+			->condition('f.jornada' , $jornada, '<=');
 		$result = $local->execute();
 
 		$puntos = array();
@@ -55,7 +49,7 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		$visitante->fields('p',array('goles_local', 'goles_visitante'))
 			->fields('f', array('jornada'))
 			->condition('f.equipo_visitante', $partido[$i], '=')
-			->condition('f.jornada' , $jorAux, '<=');
+			->condition('f.jornada' , $jornada, '<=');
 		$result = $visitante->execute();
 
 		foreach ($result as $key) {
@@ -73,7 +67,6 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 		krsort($goles_favor);
 		krsort($goles_contra);
 		//Insertamos en la tabla equipo las rachas.
-		//el equipo en cuestion es $partido[$i];
 		$update = db_update('clasificacion_jornada')
 			->fields(array(
 				'local_visitante' => $i,
@@ -94,23 +87,8 @@ for ($j=$jornada+1; $j <=$jornada+10 ; $j++) {
 				'golesCont1'=> array_sum(array_slice($goles_contra, 0,1)),
 				))
 			->condition('id_equipo', $partido[$i] ,'=')
-			->condition('jornada', $jorAux, '=')
+			->condition('jornada', $jornada, '=')
 			->execute();
-
-		/*
-		print_r($jornadas);
-		echo "<br>" . PHP_EOL;
-		echo 'Puntos: ';
-		print_r($puntos);
-		echo "<br>" . PHP_EOL;
-		echo 'Goles a favor: ';
-		print_r($goles_favor);
-		echo "<br>" . PHP_EOL;
-		echo 'Goles en contra: ';
-		print_r($goles_contra);
-		echo "<br>" . PHP_EOL;
-		echo "<br>" . PHP_EOL;
-		*/
 	}
 }
 

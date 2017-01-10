@@ -1,6 +1,4 @@
 #!/usr/bin/php
-
-
 <?php
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
@@ -31,27 +29,26 @@ foreach($trs as $tr){
 		$contra = (int)$tr->getElementsByTagName("td")->item(7)->nodeValue;
 			
 		$equipo = trim($equipo);
-			//echo $posicion . ' ' . $equipo . ' ' . $puntos . ' ' . $jugados . ' ' . $victorias . ' ' . $empates . ' ' . $derrotas . ' ' . $favor . ' ' . $contra;
-			//echo "<br>" . PHP_EOL;
-			//Hay que insertar en la tabla clasificacion, no equipos.
-			//Necesitamos el id_equipo no necesitamos para nada el nombreCompleto
 		$id_equipo = db_query('SELECT e.id_equipo FROM {equipos} e WHERE e.nombreCompleto = :equipo', array(':equipo' => $equipo))->fetchField();
-
-		$insert = db_insert('clasificacion_jornada')
-		->fields(array(
-			'id_equipo' => $id_equipo,
-			'jornada' => $jornada,
-			'posicion' => $posicion,
-			'puntos' => $puntos,
-			'jugados'=> $jugados,
-			'victorias'=> $victorias,
-			'empates'=> $empates,
-			'derrotas'=> $derrotas,
-			'favor'=> $favor,
-			'contra'=> $contra,
-			))
-		->execute();
+		$control  = db_query('SELECT cj.posicion FROM {clasificacion_jornada} cj WHERE cj.id_equipo = :id AND cj.jornada = :jornada', array(':id' => $id_equipo), ':jornada' => $jornada)->fetchField();
+		//Control para que no lo vuelva a ejecutar si los datos ya han sido almacenados.
+		if($control==null){
+			$insert = db_insert('clasificacion_jornada')
+			->fields(array(
+				'id_equipo' => $id_equipo,
+				'jornada' => $jornada,
+				'posicion' => $posicion,
+				'puntos' => $puntos,
+				'jugados'=> $jugados,
+				'victorias'=> $victorias,
+				'empates'=> $empates,
+				'derrotas'=> $derrotas,
+				'favor'=> $favor,
+				'contra'=> $contra,
+				))	
+			->execute();
 		}
+	}
 		if($posicion == 20){
 			$flag=False;
 			break;

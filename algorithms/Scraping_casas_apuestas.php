@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
@@ -17,6 +18,11 @@ $xpath=new DOMXpath($html);
 $trs = $html->getElementsByTagName("tr");
 $flag=true;
 
+$id_prim = $jornada*100 + 1;
+$control = db_query('SELECT a.BET365 FROM {apuestas} a WHERE a.id_partido = :id', array(':id' => $id_prim))->fetchField();
+
+//Control para que no lo vuelva a ejecutar si los datos ya han sido almacenados.
+if ($control == null){
 foreach($trs as $tr){
  	$nameStat = $tr->getElementsByTagName("div"); 		
  	$eLocal = $tr->getElementsByTagName("td")->item(2)->nodeValue;
@@ -66,7 +72,7 @@ foreach($trs as $tr){
 				$Local = str_replace(',', '.' , $Local);
 				$Empate = str_replace(',', '.' , $Empate);
 				$Visitante = str_replace(',', '.' , $Visitante);
-				$insert = db_insert('Cuotas')
+				$insert = db_insert('cuotas')
 					->fields(array(
 					'id_cuota' => $id_1,
 					'Local' => (float)$Local,
@@ -90,7 +96,7 @@ foreach($trs as $tr){
 				$Local = str_replace(',', '.' , $Local);
 				$Empate = str_replace(',', '.' , $Empate);
 				$Visitante = str_replace(',', '.' , $Visitante);
-				$insert = db_insert('Cuotas')
+				$insert = db_insert('cuotas')
 					->fields(array(
 					'id_cuota' => $id_2,
 					'Local' => (float)$Local,
@@ -114,7 +120,7 @@ foreach($trs as $tr){
 				$Local = str_replace(',', '.' , $Local);
 				$Empate = str_replace(',', '.' , $Empate);
 				$Visitante = str_replace(',', '.' , $Visitante);
-				$insert = db_insert('Cuotas')
+				$insert = db_insert('cuotas')
 					->fields(array(
 					'id_cuota' => $id_3,
 					'Local' => (float)$Local,
@@ -138,7 +144,7 @@ foreach($trs as $tr){
 				$Local = str_replace(',', '.' , $Local);
 				$Empate = str_replace(',', '.' , $Empate);
 				$Visitante = str_replace(',', '.' , $Visitante);
-				$insert = db_insert('Cuotas')
+				$insert = db_insert('cuotas')
 					->fields(array(
 					'id_cuota' => $id_4,
 					'Local' => (float)$Local,
@@ -157,4 +163,6 @@ foreach($trs as $tr){
 			}
 		}
 	}
+}
+	header("Location:/informe-pronostico");
 ?>

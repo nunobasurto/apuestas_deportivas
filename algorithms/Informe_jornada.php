@@ -13,10 +13,9 @@ if ($get == null)
 else
 	$jornada=$get;
 
-$jor_aux=$jornada;
-$jornada = $jornada*100;
+$jor_aux=$jornada*100;
 $arrayCasas = array(' ','BET365','Marca', 'BWIN','888Bet');
-for ($i=$jornada+1; $i <=$jornada+10; $i++) { 
+for ($i=$jor_aux+1; $i <=$jor_aux+10; $i++) { 
 	$tarifas=db_select('apuestas','a')
 			->fields('a', array('BET365','Marca', 'BWIN','888Bet'))
 			->condition('id_partido', $i, '=')
@@ -33,7 +32,7 @@ for ($i=$jornada+1; $i <=$jornada+10; $i++) {
 		$contador=0;
 		foreach ($cuotas as $key=>$cuota) {
 			$contador++;
-			$cu=db_select('Cuotas','c')
+			$cu=db_select('cuotas','c')
 				->fields('c', array('Local','Empate', 'Visitante'))
 				->condition('id_cuota', $cuota, '=')
 				->execute();
@@ -54,7 +53,7 @@ $sumatorio = 0;
 
 echo '<table class="table table-hover table-responsive">';
 echo  '<tr>';
-echo     '<td colspan=7><h3>Jornada '.$jor_aux.'</h3></td>';
+echo     '<td colspan=7><h3>Jornada '.$jornada.'</h3></td>';
 echo   '</tr>';
 echo  '<tr align = "right">
     <td>Partido</td>
@@ -114,11 +113,11 @@ foreach($mostrar as $id=>$partido){
 	}
 	echo '</tr>';
 }
-$balance_general = db_query('SELECT bg.BET365 FROM {balance_general} bg WHERE bg.jornada = :jornada', array(':jornada' => $jor_aux))->fetchfield();
+$balance_general = db_query('SELECT bg.BET365 FROM {balance_general} bg WHERE bg.jornada = :jornada', array(':jornada' => $jornada))->fetchfield();
 if ($balance_general == null){
 	$ins=db_insert('balance_general')
 			->fields(array(
-			'jornada' => $jor_aux,
+			'jornada' => $jornada,
 			'BET365'=>($contadores[1]),
 			'Marca'=>($contadores[2]),
 			'BWIN'=>($contadores[3]),
@@ -148,9 +147,9 @@ echo '</tr>';
 echo '</table>';
 
 
-//echo 'EL BALANCE ES: ' . $sumatorio;
-//echo "<br>" . PHP_EOL;
-
+/*
+* Esta función compara los goles y el pronóstico, devolviendo acierto o error.
+*/
 function compara_resultados($goleslocal, $golesvisitante, $pronostico)
 {
 	$val;

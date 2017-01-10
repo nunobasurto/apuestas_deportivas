@@ -1,10 +1,10 @@
 #!/usr/bin/php
 <?php
-//Implementación del algoritmo de backpropagation.
+//Implementación del algoritmo de backpropagation y la inserción de los datos resultantes en la base de datos.
+
 /**
 * Esta clase implementa una red neuronal.
 */
-
 class NeuralNetwork
 {
     public $num_inputs = 0;
@@ -17,16 +17,13 @@ class NeuralNetwork
     public $learning_rate = 0.15;
     public $hidden_layer;
     public $output_layer;
-    //, $hidden_layer_weights = null, $hidden_layer_bias = null, $output_layer_weights = null, $output_layer_bias = null)
     function __construct($num_inputs, $num_hidden, $num_outputs, $hidden_layer_bias = null, $hidden_layer_weights = null, $output_layer_bias = null, $output_layer_weights = null)
     {
         $this->num_inputs=$num_inputs;
         $this->hidden_layer = new NeuronLayer($num_hidden, $hidden_layer_bias);
         $this->output_layer = new NeuronLayer($num_outputs, $output_layer_bias);
         $this->init_weights_hidden($hidden_layer_weights);
-        //echo 'Hidde: ' . $hidden_layer_weights;
         $this->init_weights_output($output_layer_weights);
-        //echo 'Hidde: ' . $output_layer_weights;
     }
     function init_weights_hidden($hidden_layer_weights)
     {
@@ -35,7 +32,6 @@ class NeuralNetwork
             for ($i=0; $i<$this->num_inputs; $i++) {
                 if(empty($hidden_layer_weights))
                 {
-                    //array_push($this->hidden_layer->neurons[$h]->weights, (float)rand()/(float)getrandmax());
                     $min = -0.35;
                     $max = 0.35;
                     array_push($this->hidden_layer->neurons[$h]->weights, $min + lcg_value() * abs($max - $min));
@@ -57,7 +53,6 @@ class NeuralNetwork
             for ($i=0; $i<count($this->hidden_layer->neurons); $i++)
             {
                 if(empty($output_layer_weights)){
-                     //array_push($this->output_layer->neurons[$h]->weights, (float)rand()/(float)getrandmax());
                     $min = -0.35;
                     $max = 0.35;
                     array_push($this->output_layer->neurons[$h]->weights, $min + lcg_value() * abs($max - $min));
@@ -78,7 +73,8 @@ class NeuralNetwork
     {
         $var= array();
         $this->feed_forward($training_inputs);
-        # 1. Output neuron deltass
+
+        # 1. Salida del delta de la neuronas.
         $pd_errors_wrt_output_neuron_total_net_input = array();
         for ($i=0; $i < count($this->output_layer->neurons); $i++) { 
             array_push($pd_errors_wrt_output_neuron_total_net_input, 0);
@@ -88,7 +84,7 @@ class NeuralNetwork
             $pd_errors_wrt_output_neuron_total_net_input[$o] = $this->output_layer->neurons[$o]->calculate_pd_error_wrt_total_net_input($training_outputs);
         }
 
-        # 2. Hidden neuron deltas
+        # 2. Deltas de las neuronas ocultas.
         $pd_errors_wrt_hidden_neuron_total_net_input = array();
         for ($i=0; $i <  count($this->hidden_layer->neurons); $i++) { 
             array_push($pd_errors_wrt_hidden_neuron_total_net_input, 0);
@@ -102,14 +98,14 @@ class NeuralNetwork
             }
             $pd_errors_wrt_hidden_neuron_total_net_input[$h] = $d_error_wrt_hidden_neuron_output * $this->hidden_layer->neurons[$h]->calculate_pd_total_net_input_wrt_input();
         }
-        # 3. Update output neuron weights
+        # 3. Actualizacion de los pesos de salida de las neuronas
         for ($o=0; $o < count($this->output_layer->neurons); $o++) { 
             for ($w_ho=0; $w_ho < count($this->output_layer->neurons[$o]->weights) ; $w_ho++) { 
                 $pd_error_wrt_weight = $pd_errors_wrt_output_neuron_total_net_input[$o] * $this->output_layer->neurons[$o]->calculate_pd_total_net_input_wrt_weight($w_ho);
                 $this->output_layer->neurons[$o]->weights[$w_ho] -= $this->learning_rate * $pd_error_wrt_weight;
             }
         }
-        # 4. Update hidden neuron weights
+        # 4. Actualización de los pesos de salida de las neuronas ocultas.
         for ($h=0; $h < count($this->hidden_layer->neurons); $h++) { 
             for ($w_ih=0; $w_ih < count($this->hidden_layer->neurons[$h]->weights); $w_ih++) { 
                 $pd_error_wrt_weight = $pd_errors_wrt_hidden_neuron_total_net_input[$h] * $this->hidden_layer->neurons[$h]->calculate_pd_total_net_input_wrt_weight($w_ih);
@@ -139,7 +135,7 @@ class NeuralNetwork
     }
 }
 /**
-* 
+* Esta clase implementa una neurona oculta.
 */
 class NeuronLayer
 {
@@ -175,7 +171,7 @@ class NeuronLayer
     }
 }
 /**
-* 
+* Esta clase implmenta una neurona.
 */
 class Neuron
 {
@@ -215,10 +211,6 @@ class Neuron
     }
     function calculate_error($target_output ,$cont)
     {
-        /*echo 'Target ' . $target_output;
-        echo "<br>" . PHP_EOL;
-        echo 'Output: ' . $this->outputs;
-        echo "<br>" . PHP_EOL;*/
         $red=0;
         if ($this->outputs<=0.33)
             $red = 0;
@@ -242,26 +234,19 @@ class Neuron
     }
 }
 
-/**
-Se encarga de generar instancias para el training set.
-*/
-
-//echo "hola mundo";
-//var_dump($argv);
-//$part = $argv[0];
-
 $training_set = array();
 $test_set = array();
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
 $jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_antes > :ff ORDER BY f.fecha_antes asc', array(':ff' => $currentTyme))->fetchField();
-$jornada=15;
-$jor_Aux = $jornada;
-$jornada = $jornada*100;
+$jor_aux = $jornada*100;
 
-//$j = $jornada + $part;
-for ($j=$jornada + 1; $j <= $jornada + 10; $j++) { 
-    # code...
+$id_prue = $jor_aux + 1;
+$control = db_query('SELECT p.pronostico_local FROM {pronosticos} p WHERE p.id_partido = :id ', array(':id' => $id_prue))->fetchField();
+//Control para que no lo vuelva a ejecutar si los datos ya han sido almacenados.
+if ($control == null){
+
+for ($j=$jor_aux + 1; $j <= $jor_aux + 10; $j++) {
 
     //De esta forma ya tenemos cada uno de los id correspondientes a cada partido de la jornada.
     //Ahora debemos saber cuales son los equipos que van a disputar dicho partido.
@@ -325,8 +310,6 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
                         array_push($arrayInput, $k);
                 }
             }
-            //print_r($arrayInput);
-
             //Rachas de ambos equipos:
             $rachasEquipo = db_select('clasificacion_jornada','cj');
             $rachasEquipo->fields('cj')
@@ -382,6 +365,7 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
             $arrayAux = array();
             array_push($arrayAux, $arrayInput);
             array_push($arrayAux, $output);
+
             //Finalmente creamos la instancia con el arrayAux.
             array_push($arrayInstancia, $arrayAux);
         }
@@ -413,6 +397,7 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
     //Sacamos para no tenerlas en cuenta en el training.
     array_splice($training_set,sizeof($training_set)-2,1);
     array_splice($training_set,sizeof($training_set)/2-2,1);
+
     //Extraemos las rachas para su posterior inserción.
     for ($v=30; $v <54 ; $v++) { 
         $test_set[0][0][$v] = $training_set[sizeof($training_set)/2-1][0][$v];
@@ -429,8 +414,6 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
     $training_inputs = array();
     $training_outputs = array();
 
-    //print_r($training_set);
-
     //Hacemos tres iteraciones para extraer el valor medio que finalmente obtenemos
     $valorMedLoc = array();
     $valorMedVis = array();
@@ -443,7 +426,6 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
             $training_outputs = $training_set[$random][1];
             $nn->train($training_inputs,$training_outputs);
         }
-        //echo $i . ' ' . $nn->calculate_total_error($training_set);
         echo "<br>" . PHP_EOL;
         $valorPredicho = $nn->test($test_set[0][0]);
         print_r($valorPredicho);
@@ -492,7 +474,7 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
     }
     echo "<br>" . PHP_EOL;
     echo 'Estimacion Final ' . $estimFinal;
-    /*
+    
     $insert = db_insert('pronosticos')
             ->fields(array(
                 'id_partido' => $j,
@@ -501,34 +483,8 @@ for ($j=$jornada + 1; $j <= $jornada + 10; $j++) {
                 'pronostico_estimado'=> $estimFinal,
                 ))
             ->execute();
-            */
+            
 }
-/*header("Location:/informe-pronostico");
-/*
-$training_set = array(
-    array(array(0,0),0),
-    array(array(0,1),1),
-    array(array(1,0),1),
-    array(array(1,1),0)
-    );
-$test_set = array(
-    array(array(0,1)));
-
-$nn = new NeuralNetwork(sizeof($training_set[0][0]), 5, sizeof($training_set[0][1]));
-for ($i=0; $i <10000; $i++) {
-    $random = rand(0, sizeof($training_set));
-    $training_inputs = $training_set[$random][0];
-    $training_outputs = $training_set[$random][1];
-    $nn->train($training_inputs,$training_outputs);
 }
-echo $i . ' ' . $nn->calculate_total_error($training_set);
-
-echo "<br>" . PHP_EOL;
-echo 'llego';
-echo "<br>" . PHP_EOL;
-$valorPredicho = $nn->test($test_set[0][0]);
-print_r($valorPredicho);
-//echo $i . ' ' . $nn->calculate_total_error($test_set);
-echo "<br>" . PHP_EOL;
-*/
+header("Location:/informe-pronostico");
 ?>

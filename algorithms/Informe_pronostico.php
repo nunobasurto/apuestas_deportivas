@@ -20,10 +20,9 @@ echo '<tr align="right">
     <td><img src="images/bwin.jpg" width="60" height="25" alt="BWIN"></td>
     <td><img src="images/888.png" width="40" height="25" alt="888"></td>
 	</tr>';
-$jor_Aux = $jornada;
-$jornada = $jornada*100;
+$jor_Aux = $jornada*100;
 $arrayCasas = array(' ','BET365','Marca', 'BWIN','888Bet');
-for ($i=$jornada+1; $i <=$jornada+10; $i++) { 
+for ($i=$jor_Aux+1; $i <=$jor_Aux+10; $i++) { 
 	$tarifas=db_select('apuestas','a')
 			->fields('a', array('BET365','Marca', 'BWIN','888Bet'))
 			->condition('id_partido', $i, '=')
@@ -39,7 +38,7 @@ for ($i=$jornada+1; $i <=$jornada+10; $i++) {
 		$contador=0;
 		foreach ($cuotas as $key=>$cuota) {
 			$contador++;
-			$cu=db_select('Cuotas','c')
+			$cu=db_select('cuotas','c')
 				->fields('c', array('Local','Empate', 'Visitante'))
 				->condition('id_cuota', $cuota, '=')
 				->execute();
@@ -59,31 +58,30 @@ $contadores = array();
 foreach($mostrar as $id=>$partido){
 	$equipolocal  = db_query('SELECT f.equipo_local FROM {fecha_jornada} f WHERE f.id_partido = :id ', array(':id' => $id))->fetchField();
     $equipovisitante  = db_query('SELECT f.equipo_visitante FROM {fecha_jornada} f WHERE f.id_partido = :id', array(':id'=>$id))->fetchField();
-    //$escudolocal = db_query('SELECT i.escudo FROM {images} i WHERE i.id_equipo = :id_equipo' array(':id_equipo' => $equipolocal))->fetchField();
-    //$escudovisitante = db_query('SELECT i.escudo FROM {images} i WHERE i.id_equipo = :id_equipo' array(':id_equipo' => $equipovisitante))->fetchField();
     $equipolocal = db_query('SELECT e.nombreCompleto FROM {equipos} e WHERE e.id_equipo = :id', array(':id'=>$equipolocal))->fetchfield();
     $equipovisitante = db_query('SELECT e.nombreCompleto FROM {equipos} e WHERE e.id_equipo = :id', array(':id'=>$equipovisitante))->fetchfield();
 	$pronostico = db_query('SELECT p.pronostico_estimado FROM {pronosticos} p WHERE p.id_partido = :id', array(':id'=>$id))->fetchfield();
 
 	echo '<tr align = "right">';
-	
-    //echo '<td> <img src=' . $escudolocal .' width="40" height="25" alt="888">-<img src=' . $escudovisitante .' width="40" height="25" alt="888"></td>';
     echo '<td>' . $equipolocal . ' - '. $equipovisitante . '</td>';
     echo '<td><CENTER>'.$pronostico.'</CENTER></td>';
 	if($pronostico=="1")
 		$pronos = 0;
 	else if($pronostico=="X")
 		$pronos = 1;
-	else
+	else if($pronostico=="2")
 		$pronos = 2;
-	foreach ($partido as $casa=>$casa_apuestas){
-		foreach ($casa_apuestas as $x12=>$cuota) {
-			if($x12==$pronos){
-				echo '<td>'.number_format($cuota,2).'</td>';
-				$contadores[$casa-($id*10)]+=$cuota;
+	else
+		$pronos = 4;
+	if($pronos != 4)
+		foreach ($partido as $casa=>$casa_apuestas){
+			foreach ($casa_apuestas as $x12=>$cuota) {
+				if($x12==$pronos){
+					echo '<td>'.number_format($cuota,2).'</td>';
+					$contadores[$casa-($id*10)]+=$cuota;
+				}
 			}
 		}
-	}
 	echo '</tr>';
 }
 

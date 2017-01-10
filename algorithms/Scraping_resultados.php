@@ -1,5 +1,4 @@
 #!/usr/bin/php
-
 <?php
 
 define('DRUPAL_ROOT', getcwd());
@@ -8,12 +7,12 @@ drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 $tiempo = getdate();
 $currentTyme= $tiempo["year"] . '-' . $tiempo["mon"] . '-' . $tiempo["mday"] . ' 00:00:00';
 $jornada  = db_query('SELECT f.jornada FROM {fecha_jornada} f WHERE f.fecha_despues <= :ff ORDER BY f.fecha_despues desc', array(':ff' => $currentTyme))->fetchField(); 
-$jor = $jornada*100;
+$jor_aux = $jornada*100;
 /*
 Recorremos todos los partidos de la jornada
 */
 for ($i = 1; $i <= 10; $i++) {
-    $id = $jor + $i;
+    $id = $jor_aux + $i;
     //Extreaemos los equipos local y visitante para utilizarlos en la url.
     $equipolocal  = db_query('SELECT e.nombre FROM {fecha_jornada} f, {equipos} e WHERE f.id_partido = :id AND f.equipo_local = e.id_equipo', array(':id' => $id))->fetchField();
     $equipovisitante  = db_query('SELECT e.nombre FROM {fecha_jornada} f, {equipos} e WHERE f.id_partido = :id AND f.equipo_visitante = e.id_equipo', array(':id'=>$id))->fetchField();
@@ -104,41 +103,47 @@ for ($i = 1; $i <= 10; $i++) {
  			}
 		}
 	}
-	//Insertamos en la base de datos los valores individualmente.
-	$insert = db_insert('partidos')
-	->fields(array(
-		'id_partido' => $id,
-		'posesion_local' =>substr($local[0], 0, 2)/100,
-		'posesion_visitante' => substr($visitante[0], 0, 2)/100,
-		'goles_local' => $local[1],
-		'goles_visitante' => $visitante[1],
-		'remates3p_local' => $local[2],
-		'remates3p_visitante' => $visitante[2],
-		'rematesfuera_local' => $local[3],
-		'rematesfuera_visitante' => $visitante[3],
-		'remates_local' => $local[4],
-		'remates_visitante' => $visitante[4],
-		'paradas_local' => $local[5],
-		'paradas_visitante' => $visitante[5],
-		'corners_local' => $local[6],
-		'corners_visitante' => $visitante[6],
-		'outsides_local' => $local[7],
-		'outsides_visitante' => $visitante[7],
-		'amarillas_local' => $local[8],
-		'amarillas_visitante' => $visitante[8],
-		'rojas_local' => $local[9],
-		'rojas_visitante' => $visitante[9],
-		'asistencias_local'=> $local[10],
-		'asistencias_visitante'=> $visitante[10],
-		'palos_local'=> $local[11],
-		'palos_visitante'=> $visitante[11],
-		'lesiones_local'=> $local[12],
-		'lesiones_visitante'=> $visitante[12],
-		'sustituciones_local' => $local[13],
-		'sustituciones_visitante' => $visitante[13],
-		'faltas_local' => $local[14],
-		'faltas_visitante' => $visitante[14],
-	))
-	->execute(); 
+	
+	$control  = db_query('SELECT p.posesion_local FROM {partidos} p WHERE p.id_partido = :id', array(':id' => $id))->fetchField();
+	//Control para que no lo vuelva a ejecutar si los datos ya han sido almacenados.
+	if($control == null){
+		//Insertamos en la base de datos los valores individualmente.
+		$insert = db_insert('partidos')
+		->fields(array(
+			'id_partido' => $id,
+			'posesion_local' =>substr($local[0], 0, 2)/100,
+			'posesion_visitante' => substr($visitante[0], 0, 2)/100,
+			'goles_local' => $local[1],
+			'goles_visitante' => $visitante[1],
+			'remates3p_local' => $local[2],
+			'remates3p_visitante' => $visitante[2],
+			'rematesfuera_local' => $local[3],
+			'rematesfuera_visitante' => $visitante[3],
+			'remates_local' => $local[4],
+			'remates_visitante' => $visitante[4],
+			'paradas_local' => $local[5],
+			'paradas_visitante' => $visitante[5],
+			'corners_local' => $local[6],
+			'corners_visitante' => $visitante[6],
+			'outsides_local' => $local[7],
+			'outsides_visitante' => $visitante[7],
+			'amarillas_local' => $local[8],
+			'amarillas_visitante' => $visitante[8],
+			'rojas_local' => $local[9],
+			'rojas_visitante' => $visitante[9],
+			'asistencias_local'=> $local[10],
+			'asistencias_visitante'=> $visitante[10],
+			'palos_local'=> $local[11],
+			'palos_visitante'=> $visitante[11],
+			'lesiones_local'=> $local[12],
+			'lesiones_visitante'=> $visitante[12],
+			'sustituciones_local' => $local[13],
+			'sustituciones_visitante' => $visitante[13],
+			'faltas_local' => $local[14],
+			'faltas_visitante' => $visitante[14],
+		))
+		->execute();
+	}
 }
+header("Location:/informe-jornada");
 ?>
