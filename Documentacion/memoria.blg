@@ -9,7 +9,5 @@ A level-1 auxiliary file: ./tex/7_Conclusiones_Lineas_de_trabajo_futuras.aux
 The style file: plain.bst
 Database file #1: bibliografia.bib
 Warning--I didn't find a database entry for "_machine_learning_2014"
-Warning--I didn't find a database entry for "."
 Warning--to sort, need author or key in _web_2016
-Warning--to sort, need author or key in _servidor_2016
-(There were 4 warnings)
+(There were 2 warnings)

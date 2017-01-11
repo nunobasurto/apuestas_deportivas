@@ -1,7 +1,28 @@
 \select@language {spanish}
 \select@language {spanish}
 \addvspace {10pt}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Distribuci\IeC {\'o}n de los commits a lo largo del tiempo.}}{4}{figure.Alph1.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Distribuci\IeC {\'o}n de los commits en d\IeC {\'\i }as y horas.}}{4}{figure.Alph1.2}
 \addvspace {10pt}
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Diagrama completo de los casos de uso.}}{10}{figure.Alph2.1}
 \addvspace {10pt}
+\contentsline {figure}{\numberline {C.1}{\ignorespaces Modelo relacional}}{18}{figure.Alph3.1}
+\contentsline {figure}{\numberline {C.2}{\ignorespaces Tabla de partidos}}{19}{figure.Alph3.2}
+\contentsline {figure}{\numberline {C.3}{\ignorespaces Diagrama de flujo}}{21}{figure.Alph3.3}
+\contentsline {figure}{\numberline {C.4}{\ignorespaces Arquitectura de tres niveles Cliente servidor}}{22}{figure.Alph3.4}
 \addvspace {10pt}
+\contentsline {figure}{\numberline {D.1}{\ignorespaces Loguearse en Drupal}}{24}{figure.Alph4.1}
+\contentsline {figure}{\numberline {D.2}{\ignorespaces Administraci\IeC {\'o}n de apuestas}}{25}{figure.Alph4.2}
+\contentsline {figure}{\numberline {D.3}{\ignorespaces Atajos en Drupal}}{25}{figure.Alph4.3}
+\contentsline {figure}{\numberline {D.4}{\ignorespaces Editar contenidos}}{25}{figure.Alph4.4}
+\contentsline {figure}{\numberline {D.5}{\ignorespaces Apache en funcionamiento}}{27}{figure.Alph4.5}
+\contentsline {figure}{\numberline {D.6}{\ignorespaces Instalaci\IeC {\'o}n PHP}}{29}{figure.Alph4.6}
 \addvspace {10pt}
+\contentsline {figure}{\numberline {E.1}{\ignorespaces Importaci\IeC {\'o}n de servicio virtual.}}{33}{figure.Alph5.1}
+\contentsline {figure}{\numberline {E.2}{\ignorespaces Preferencias del servicio virtual.}}{34}{figure.Alph5.2}
+\contentsline {figure}{\numberline {E.3}{\ignorespaces Men\IeC {\'u} con el que puede interactuar el usuario.}}{35}{figure.Alph5.3}
+\contentsline {figure}{\numberline {E.4}{\ignorespaces Vista del usuario de Inicio.}}{35}{figure.Alph5.4}
+\contentsline {figure}{\numberline {E.5}{\ignorespaces Vista del usuario del Informe de la Jornada.}}{36}{figure.Alph5.5}
+\contentsline {figure}{\numberline {E.6}{\ignorespaces Vista del usuario del Informe Jornada.}}{36}{figure.Alph5.6}
+\contentsline {figure}{\numberline {E.7}{\ignorespaces Vista del usuario del Informe de la Jornada con la URL diferente.}}{37}{figure.Alph5.7}
+\contentsline {figure}{\numberline {E.8}{\ignorespaces Vista del usuario del Informe del pron\IeC {\'o}stico.}}{37}{figure.Alph5.8}

@@ -1,9 +1,5 @@
 \begin{thebibliography}{1}
 
-\bibitem{_servidor_2016}
-Servidor {HTTP} {Apache}, June 2016.
-\newblock Page Version ID: 91988556.
-
 \bibitem{_web_2016}
 Web scraping, November 2016.
 \newblock Page Version ID: 94838651.
@@ -15,5 +11,9 @@ phpMyAdmin contributors.
 \bibitem{mazur_step_2015}
 {Mazur}.
 \newblock A {Step} by {Step} {Backpropagation} {Example}, March 2015.
+
+\bibitem{torres_servicios_2013}
+Jesús Torres.
+\newblock Servicios y demonios en {Linux}, May 2013.
 
 \end{thebibliography}
