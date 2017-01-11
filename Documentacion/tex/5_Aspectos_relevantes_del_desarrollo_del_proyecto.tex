@@ -24,14 +24,118 @@ Antes de la entrada de los datos al algoritmo se realiza una normalización de l
 \large{$$v' = \frac{v-min_{a}}{max_{a}-min_{a}}$$}
 \end{center}
 
+En un primer momento se pensó introducir todos los partidos anteriores como instancias, independientemente el equipo hubiese disputado el partido como local o como visitante, para diferenciarlo se establecía un campo en la tabla \textit{clasificacion\_jornada}, llamado \textit{local\_visitante}, este campo se encuentra a 0 si el equipo juega como local o 1 si juega como visitante. Dado que los resultados obtenidos no eran muy bueno se planteó otra posibilidad, si el equipo iba a disputar el partido como local se tomaban únicamente los datos de os partidos como local para ese equipo y para el rival lo mismo, se iban a tomar los datos como visitante.
+
+Se realizó un estudio de tres jornada, en concreto la 12, 13 y 14, para elegir una u otra, en estas tablas \ref{tabla:jornada12}, \ref{tabla:jornada13} y \ref{tabla:jornada14} podemos observar los resultados obtenidos en los algoritmos, \textit{Pronóstico 1} es el primer método nombrado donde se utilizaban todos los partidos, el segundo método donde se diferenciaba local y visitante es \textit{Pronóstico 2}.
+
+Una vez analizados los datos vemos como es el segundo método el que consigue mejores resultados.
+ \begin{table}
+  \begin{center}
+   \begin{tabular}{|p{5cm} | p{2.5cm} |p{2.5cm} |p{2.5cm} |}
+    \hline
+   	Jornada 12 & Resultado & Pronostico 1 & Pronostico 2\\
+    \hline
+    Alaves - Espanyol & 0-1 & \cellcolor{red}1 & \cellcolor{green}2\\
+    \hline
+    Athletic - Villareal & 1-0 & \cellcolor{red}X & \cellcolor{red}2\\
+    \hline
+    Barcelona - Málaga & 0-0 & \cellcolor{red}1 & \cellcolor{green}X\\
+    \hline
+    Deportivo - Sevilla & 2-3 & \cellcolor{red}1 & \cellcolor{red}X\\
+    \hline
+    Valencia - Granada & 1-1 & \cellcolor{green}X & \cellcolor{green}X\\
+    \hline
+    Betis - Las Palmas & 2-0 & \cellcolor{red}X & \cellcolor{red}X\\
+    \hline
+    Atletico - Real Madrid & 0-3 & \cellcolor{red}1 & \cellcolor{green}2\\
+    \hline
+    Sporting - Real Sociedad & 1-3 & \cellcolor{red}1 & \cellcolor{green}2\\
+    \hline
+	Eibar - Celta & 1-0 & \cellcolor{green}1 & \cellcolor{green}1\\
+    \hline
+    Leganés - Osasuna & 2-0 & \cellcolor{red}X & \cellcolor{red}X\\
+    \hline
+   \end{tabular}
+   \caption{Pruebas jornada 12.}
+   \label{tabla:jornada12}
+  \end{center}
+ \end{table} 
+
+ \begin{table}
+  \begin{center}
+   \begin{tabular}{|p{5cm} | p{2.5cm} |p{2.5cm} |p{2.5cm} |}
+    \hline
+   	Jornada 13 & Resultado & Pronostico 1 & Pronostico 2\\
+    \hline
+    Celta - Granada & 3-1 & \cellcolor{green}1 & \cellcolor{green}1\\
+    \hline
+    Espanyol - Leganés & 3-0 & \cellcolor{green}1 & \cellcolor{green}1\\
+    \hline
+    Málaga - Deportivo & 4-3 & \cellcolor{red}2 & \cellcolor{green}1\\
+    \hline
+    Osasuna - Atlético & 0-3 & \cellcolor{green}2 & \cellcolor{red}X\\
+    \hline
+    Real Madrid - Sporting & 2-1 & \cellcolor{red}X & \cellcolor{green}1\\
+    \hline
+    Real Sociedad - Barcelona & 1-1 & \cellcolor{red}2 & \cellcolor{red}2\\
+    \hline
+    Villareal - Alavés & 0-2 & \cellcolor{red}X & \cellcolor{red}1\\
+    \hline
+	Sevilla - Valencia & 2-1 & \cellcolor{red}X & \cellcolor{green}1\\
+    \hline
+	Eibar - Betis & 3-1 & \cellcolor{green}1 & \cellcolor{green}1\\
+    \hline
+    Las Palmas - Athletic & 3-1 & \cellcolor{red}X & \cellcolor{red}1\\
+    \hline
+   \end{tabular}
+   \caption{Pruebas jornada 13.}
+   \label{tabla:jornada13}
+  \end{center}
+ \end{table} 
+ 
+  \begin{table}
+  \begin{center}
+   \begin{tabular}{|p{5cm} | p{2.5cm} |p{2.5cm} |p{2.5cm} |}
+    \hline
+   	Jornada 14 & Resultado & Pronostico 1 & Pronostico 2\\
+    \hline
+    Alaves - Las Palmas & 1-1 & \cellcolor{green}X & \cellcolor{green}X\\
+    \hline
+    Athletic - Eibar & 3-1 & \cellcolor{green}1 & \cellcolor{red}X\\
+    \hline
+    Barcelona - Real Madrid & 1-1 & \cellcolor{green}X & \cellcolor{red}2\\
+    \hline
+    Deportivo - Real Sociedad & 5-1 & \cellcolor{red}X & \cellcolor{red}2\\
+    \hline
+    Valencia - Málaga & 2-2 & \cellcolor{red}2 & \cellcolor{red}2\\
+    \hline
+    Betis - Celta & 3-3 & \cellcolor{green}X & \cellcolor{green}X\\
+    \hline
+    Atletico - Espanyol & 0-0 & \cellcolor{red}2 & \cellcolor{green}1\\
+    \hline
+    Sporting - Osasuna & 3-1 & \cellcolor{red}X & \cellcolor{green}1\\
+    \hline
+	Granada - Sevilla & 2-1 & \cellcolor{red}X & \cellcolor{red}2\\
+    \hline
+    Leganés - Villareal & 0-0 & \cellcolor{red}1 & \cellcolor{green}X\\
+    \hline
+   \end{tabular}
+   \caption{Pruebas jornada 14.}
+   \label{tabla:jornada14}
+  \end{center}
+ \end{table} 
 
 \section{Optimización del algoritmo de Backpropagation}
 Cuando los datos se encuentran en la red neuronal es preciso optimizar el número de neuronas que se van a utilizar. Con un número de neuronas pequeño, la red neuronal puede ser incapaz de aprender todos los patrones existentes, teniendo problemas para devolver la salida deseada. En cambio, si el número de neuronas es demasiado grande, la red neuronal se queda sin margen de adaptación a cambios.
 
 Otro factor a tener en cuenta son las iteraciones que van a ejecutarse, ya que ante un pequeño número el algoritmo puede no aprender suficiente, y si el número es muy alto termina memorizando cada una. Esto supone que no se logren los resultados deseados en el test, por lo que se ha llevado a cabo un estudio para determinar cual es la cantidad más adecuada de neuronas y de epochs para el aprendizaje de la red neuronal.
-De esta manera, se considera la mejor  configuración para la red neuronal aquella que menos  error ha dado.
 
-\section{Aplicación de la mineria de datos}
+Se utilizó la jornada 14 para ver como realizar el ajuste de la red neuronal, extraíamos el error que nos encontrábamos realizando el training, en esta tabla podemos observar el error obtenido.
+
+
+
+TABLA
+
 
 \section{Interfaz sencilla para el usuario}
 
