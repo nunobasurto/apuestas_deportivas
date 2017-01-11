@@ -6,13 +6,13 @@ El diseño esta basado en que el usuario pueda conseguir sus objetivos, como enc
 
 Para tratar de conseguir los objetivos del usuario, es necesario conocer estos desde el principio del desarrollo. Por ello es necesario conocer el usuario, el uso que se va a dar de la aplicación o que es lo que necesita.
 
-Centrar el diseño en los usuario lleva a investigar la reacción ante el diseño, conocer la experiencia de uso e innovar, siempre teniendo en cuanta mejorar la experiencia del usuario.
+Centrar el diseño en los usuario lleva a investigar la reacción ante el diseño, conocer la experiencia de uso e innovar, siempre teniendo en cuanta mejorar la experiencia del usuario \cite{diseno_centrado_usuario_2016}.
 
 El Diseño Web Centrado en el Usuario se divide en varias fases. Como podemos observar en la Figura \ref{fig:DisCenUsu} algunas de las fases son iterativas.
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{img/diseno_centrado_usuario}
-\caption[Fases del Diseño Centrado en el Usuario.]{Imagen extraida de~\url{http://asanzdiego.github.io/curso-interfaces-web-2014/01-usabilidad/slides/img/disenio-centrado-usuario.png}}
+\caption[Fases del Diseño Centrado en el Usuario.]{Fases del Diseño Centrado en el Usuario. Imagen extraida de\cite{diseno_imagen}}
 \label{fig:DisCenUsu}
 \end{figure}
 \subsection{Planificación}
@@ -58,44 +58,64 @@ Otras preguntas que debemos realizarnos son: ¿quién lo utiliza?, ¿cuándo lo 
 Es muy importante tener una respuesta a estas preguntas, ya que nos puede permitir adaptarnos a los usuarios y de esta manera afianzarnos a ellos.
 
 \section{Scraping}
-Técnica utilizada para simular  la navegación de un humano en Internet con el fin de extraer información del sitio web. Los datos pueden ser almacenados y analizados en una base de datos cent no expandimos ral o en otros lugares de almacenamiento.  Son diversas las técnicas que se pueden utilizar, en concreto se ha empleado el protocolo HTTP, mediante la observación de la estructura de la página vamos viendo como recorrerla y cuál es el sitio en el que encontramos los datos que queremos, una vez ahí los extraemos.\cite{_web_2016}
+Técnica utilizada para simular  la navegación de un humano en Internet con el fin de extraer información del sitio web. Los datos pueden ser almacenados y analizados en una base de datos cent no expandimos ral o en otros lugares de almacenamiento.  Son diversas las técnicas que se pueden utilizar, en concreto se ha empleado el protocolo HTTP, mediante la observación de la estructura de la página vamos viendo como recorrerla y cuál es el sitio en el que encontramos los datos que queremos, una vez ahí los extraemos \cite{wiki:scraping}.
 
 \section{Machine Learning}
 En español denominado como aprendizaje automático, es aquel proceso que le da a las computadoras la habilidad de aprender sin ser explícitamente programadas. Hay una segunda definición mucho más clara:
 \begin{quote}
 Se dice que un programa de computación aprende de la experiencia E con respecto a una tarea T y alguna medida de rendimiento P, si el rendimiento en T, medido por P, mejora con la experiencia E.
 \end{quote}
-El Machine Learning se divide en dos áreas principales, el aprendizaje supervisado y el no supervisado, mientras que el primero requiere una etiqueta a predecir, en el segundo no se sabe.\cite{_machine_learning_2014}
+El Machine Learning se divide en dos áreas principales, el aprendizaje supervisado y el no supervisado, mientras que el primero requiere una etiqueta a predecir, en el segundo no se sabe.\cite{wiki:machine_learning}
 
 En esta figura \ref{fig:EjMachLear} podemos ver un ejemplo sencillo del aprendizaje automático.
 
 \begin{figure}
 \centering
 \includegraphics[width=.9\textwidth]{img/diseno_centrado_usuario}
-\caption[Sencillo ejemplo de Machine Learning]{Imagen proportionada por Álvar Arnaiz}}
+\caption[Esquema de funcionamiento de Aprendizaje Automático (Machine Learning)]{Esquema de funcionamiento de Aprendizaje Automático (Machine Learning)
+. Imagen proporcionada por Álvar Arnaiz}
+
 \label{fig:EjMachLear}
 \end{figure}
 
 \section{Minería de datos} Es el proceso por el cual es posible detectar información tratable de conjuntos de datos, para después transformarla en una estructura comprensible y poder así utilizarla más tarde.
-Tiende a confundirse con el Machine Learning, pero su principal diferencia es que mientras este último se usa para reproducir patrones conocidos y hacer predicciones basadas en patrones, la minería de datos descubre patrones desconocidos.
+Tiende a confundirse con el Machine Learning, pero su principal diferencia es que mientras este último se usa para reproducir patrones conocidos y hacer predicciones basadas en patrones, la minería de datos descubre patrones desconocidos\cite{mineria_datos}
 
 \section{Neuronas artificiales}
-Similares a la idea de neuronas biológicas, forman parte de redes neuronales artificiales. Reciben una serie de entradas y dan una salida, la cual se ve condicionada por tres funciones: función de propagación, función de activación y función de transferencia.
+Similares a la idea de neuronas biológicas, forman parte de redes neuronales artificiales. Reciben una serie de entradas y dan una salida similar a la figura \ref{fig:NeuArt}. La salida se ve condicionada por tres funciones: función de propagación, función de activación y función de transferencia\cite{neurona_artificial}
+
+\begin{figure}
+\centering
+\includegraphics[width=.7\textwidth]{img/neurona_artificial}
+\caption[Esquema de una neurona artificial]{Neurona artificial, n1 y n2 son las entradas, mientras que nf la salida. Imagen obtenida en \cite{neurona_artificial}.}
+\label{fig:NeuArt}
+\end{figure}
 
 \section{Redes neuronales artificiales}
-Imitan el funcionamiento de las redes neuronales biológicas, donde un conjunto de neuronas artificiales trabajan unidas, a fin de resolver problemas relacionados con el reconocimiento de formas o con la predicción. Se parte de un conjunto de datos de entrada significativo para conseguir que la red aprenda las propiedades deseadas\cite{.
+Imitan el funcionamiento de las redes neuronales biológicas, donde un conjunto de neuronas artificiales trabajan unidas, a fin de resolver problemas relacionados con el reconocimiento de formas o con la predicción. 
+
+Se parte de un conjunto de datos de entrada significativo para conseguir que la red aprenda las propiedades deseadas. Esto se logra modificando los pesos gracias al entrenamiento. Las redes se organizan por capas, habiendo capas de entrada, ocultas y de salida. Para que se comprenda la entrada se suele realizar un preprocesamiento\cite{redes_neuronales}.
 
 \section{Aprendizaje Supervisado}
-Se dispone de un conjunto de ejemplos de el cual se conoce la respuesta, por lo que el objetivo es marcar una regla o correspondencia de manera que sea posible aproximar la respuesta para todos los objetos que se presenten. La salida de la función puede ser un valor numérico o una clase~\cite{contributors_phpmyadmin_????}.
-El uso más extendido del aprendizaje supervisado consiste en hacer predicciones a futuro basadas en comportamientos o características ya vistas en los datos que se contienen\cite{_conceptos_2014}
+Se dispone de un conjunto de ejemplos de el cual se conoce la respuesta, por lo que el objetivo es marcar una regla o correspondencia de manera que sea posible aproximar la respuesta para todos los objetos que se presenten. La salida de la función puede ser un valor numérico o una clase.
+El uso más extendido del aprendizaje supervisado consiste en hacer predicciones a futuro basadas en comportamientos o características ya vistas en los datos que se contienen\cite{alejandrocassis_aprendizaje_2015}.
 
 \section{Backpropagation}
-También denominada propagación hacia atrás de errores, es un tipo de algoritmo con aprendizaje supervisado utilizado para el entrenamiento de las redes neuronales artificiales. Una vez aplicado un patrón, este se propaga a través del resto de capas hasta generar una salida, la cual se compara con la salida establecida como objetivo ya que se trata de aprendizaje supervisado. Se obtiene un error que se propaga hacia atrás cambiando los pesos, acercando así el algoritmo a un mejor resultado.
-A medida que se entrena la red neuronal, las capas intermedias aprenden a organizarse para así reconocer diferentes características del espacio de entrada~\cite{mazur_step_2015}.
+También denominada propagación hacia atrás de errores, es un tipo de algoritmo con aprendizaje supervisado utilizado para el entrenamiento de las redes neuronales artificiales, su esquema es similar al que podemos observar en la figura \ref{fig:Backpro}. Una vez aplicado un patrón, este se propaga a través del resto de capas hasta generar una salida, la cual se compara con la salida establecida como objetivo ya que se trata de aprendizaje supervisado. Se obtiene un error que se propaga hacia atrás cambiando los pesos, acercando así el algoritmo a un mejor resultado.
+A medida que se entrena la red neuronal, las capas intermedias aprenden a organizarse para así reconocer diferentes características del espacio de entrada~\cite{backpropagation_2015}.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{img/backpropagation}
+\caption{Algoritmo de Backpropagation.}
+\label{fig:Backpro}
+\end{figure}
+
+
 
 \section{Preprocesamiento}
-El ruido y las anomalías de las bases de datos reales suelen conducir a la extracción de patrones y reglas poco útiles. La finalidad del preprocesamiento es la creación de información homogénea. En el proyecto se ha llevado a cabo la normalización
+El ruido y las anomalías de las bases de datos reales suelen conducir a la extracción de patrones y reglas poco útiles. La finalidad del preprocesamiento es la creación de información homogénea. En el proyecto se ha llevado a cabo la normalización~\cite{garcia_data_2015}.
 
 \section{Demonios}
 También llamados servicios, son un tipo especial de procesos que se ejecutan en segundo plano.
-El sistema los inicia en el arranque, ejecutándose en este caso una tarea planificada y comprobando si la fecha del sistema coincide con las fechas de la jornada. Para la ejecución del demonio se emplea un gestor de servicios, llamado cron. El demonio también es posible ejecutarlo a mano ya que es posible que en un momento determinado no se encuentre el servidor iniciado y no haya sido posible la ejecución del demonio\cite{torres_servicios_2013}.
+El sistema los inicia en el arranque, ejecutándose en este caso una tarea planificada y comprobando si la fecha del sistema coincide con las fechas de la jornada. Para la ejecución del demonio se emplea un gestor de servicios, llamado cron. El demonio también es posible ejecutarlo a mano ya que es posible que en un momento determinado no se encuentre el servidor iniciado y no haya sido posible la ejecución del demonio~\cite{servicios_linux_2013}.

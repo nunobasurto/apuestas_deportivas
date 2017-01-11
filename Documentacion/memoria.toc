@@ -20,40 +20,41 @@
 \contentsline {subsection}{Mantenimiento y seguimiento}{6}{section*.14}
 \contentsline {section}{\numberline {3.2}Scraping}{7}{section.3.2}
 \contentsline {section}{\numberline {3.3}Machine Learning}{7}{section.3.3}
-\contentsline {section}{\numberline {3.4}Miner\IeC {\'\i }a de datos}{7}{section.3.4}
-\contentsline {section}{\numberline {3.5}Neuronas artificiales}{7}{section.3.5}
+\contentsline {section}{\numberline {3.4}Miner\IeC {\'\i }a de datos}{8}{section.3.4}
+\contentsline {section}{\numberline {3.5}Neuronas artificiales}{8}{section.3.5}
 \contentsline {section}{\numberline {3.6}Redes neuronales artificiales}{8}{section.3.6}
-\contentsline {section}{\numberline {3.7}Aprendizaje Supervisado}{8}{section.3.7}
-\contentsline {section}{\numberline {3.8}Backpropagation}{8}{section.3.8}
-\contentsline {section}{\numberline {3.9}Preprocesamiento}{8}{section.3.9}
-\contentsline {section}{\numberline {3.10}Demonios}{8}{section.3.10}
-\contentsline {chapter}{T\IeC {\'e}cnicas y herramientas}{10}{chapter*.15}
-\contentsline {section}{\numberline {4.1}T\IeC {\'e}cnicas}{10}{section.4.1}
-\contentsline {subsection}{Scrum}{10}{section*.16}
-\contentsline {subsection}{Web scraping}{10}{section*.17}
-\contentsline {section}{\numberline {4.2}Herramientas}{11}{section.4.2}
-\contentsline {subsection}{Trello}{11}{section*.18}
-\contentsline {subsection}{GitHub}{11}{section*.19}
-\contentsline {subsection}{Oracle VM Virtual Box}{11}{section*.20}
-\contentsline {subsection}{Servidor web Apache}{11}{section*.21}
-\contentsline {subsection}{Drupal}{11}{section*.22}
-\contentsline {subsection}{Sublime Text}{12}{section*.23}
-\contentsline {subsection}{Zotero}{12}{section*.24}
-\contentsline {subsection}{}{12}{section*.25}
-\contentsline {chapter}{Aspectos relevantes del desarrollo del proyecto}{13}{chapter*.26}
-\contentsline {section}{\numberline {5.1}Lenguaje para el desarrollo del proyecto}{13}{section.5.1}
-\contentsline {subsection}{PHP en Drupal}{13}{section*.27}
-\contentsline {section}{\numberline {5.2}Datos de entrada a la red neuronal}{14}{section.5.2}
-\contentsline {section}{\numberline {5.3}Optimizaci\IeC {\'o}n del algoritmo de Backpropagation}{14}{section.5.3}
-\contentsline {section}{\numberline {5.4}Interfaz sencilla para el usuario}{15}{section.5.4}
-\contentsline {section}{\numberline {5.5}Automatizaci\IeC {\'o}n del funcionamiento}{15}{section.5.5}
-\contentsline {chapter}{Trabajos relacionados}{16}{chapter*.28}
-\contentsline {section}{\numberline {6.1}Neural Network Prediction of NFL Football Games}{16}{section.6.1}
-\contentsline {section}{\numberline {6.2}Sistema de predicci\IeC {\'o}n de resultados en eventos deportivos}{16}{section.6.2}
-\contentsline {chapter}{Conclusiones y L\IeC {\'\i }neas de trabajo futuras}{18}{chapter*.29}
-\contentsline {section}{\numberline {7.1}Conclusiones}{18}{section.7.1}
-\contentsline {section}{\numberline {7.2}L\IeC {\'\i }neas de trabajo futuras}{19}{section.7.2}
-\contentsline {subsection}{Incremento de la informaci\IeC {\'o}n}{19}{section*.30}
-\contentsline {subsection}{Ampliaci\IeC {\'o}n del entorno de actuaci\IeC {\'o}n}{19}{section*.31}
-\contentsline {subsection}{Pron\IeC {\'o}stico en tiempo real}{20}{section*.32}
-\contentsline {chapter}{Bibliograf\'{\i }a}{21}{section*.34}
+\contentsline {section}{\numberline {3.7}Aprendizaje Supervisado}{9}{section.3.7}
+\contentsline {section}{\numberline {3.8}Backpropagation}{9}{section.3.8}
+\contentsline {section}{\numberline {3.9}Preprocesamiento}{10}{section.3.9}
+\contentsline {section}{\numberline {3.10}Demonios}{10}{section.3.10}
+\contentsline {chapter}{T\IeC {\'e}cnicas y herramientas}{11}{chapter*.15}
+\contentsline {section}{\numberline {4.1}T\IeC {\'e}cnicas}{11}{section.4.1}
+\contentsline {subsection}{Scrum}{11}{section*.16}
+\contentsline {subsection}{Web scraping}{11}{section*.17}
+\contentsline {section}{\numberline {4.2}Herramientas}{12}{section.4.2}
+\contentsline {subsection}{Trello}{12}{section*.18}
+\contentsline {subsection}{GitHub}{12}{section*.19}
+\contentsline {subsection}{Oracle VM Virtual Box}{12}{section*.20}
+\contentsline {subsection}{Servidor web Apache}{12}{section*.21}
+\contentsline {subsection}{Drupal}{13}{section*.22}
+\contentsline {subsection}{Sublime Text}{13}{section*.23}
+\contentsline {subsection}{Zotero}{13}{section*.24}
+\contentsline {subsection}{Texmaker}{14}{section*.25}
+\contentsline {chapter}{Aspectos relevantes del desarrollo del proyecto}{15}{chapter*.26}
+\contentsline {section}{\numberline {5.1}Lenguaje para el desarrollo del proyecto}{15}{section.5.1}
+\contentsline {subsection}{PHP en Drupal}{15}{section*.27}
+\contentsline {section}{\numberline {5.2}Datos de entrada a la red neuronal}{16}{section.5.2}
+\contentsline {section}{\numberline {5.3}Optimizaci\IeC {\'o}n del algoritmo de Backpropagation}{16}{section.5.3}
+\contentsline {section}{\numberline {5.4}Aplicaci\IeC {\'o}n de la mineria de datos}{17}{section.5.4}
+\contentsline {section}{\numberline {5.5}Interfaz sencilla para el usuario}{17}{section.5.5}
+\contentsline {section}{\numberline {5.6}Automatizaci\IeC {\'o}n del funcionamiento}{17}{section.5.6}
+\contentsline {chapter}{Trabajos relacionados}{19}{chapter*.28}
+\contentsline {section}{\numberline {6.1}Neural Network Prediction of NFL Football Games}{19}{section.6.1}
+\contentsline {section}{\numberline {6.2}Sistema de predicci\IeC {\'o}n de resultados en eventos deportivos}{19}{section.6.2}
+\contentsline {chapter}{Conclusiones y L\IeC {\'\i }neas de trabajo futuras}{21}{chapter*.29}
+\contentsline {section}{\numberline {7.1}Conclusiones}{21}{section.7.1}
+\contentsline {section}{\numberline {7.2}L\IeC {\'\i }neas de trabajo futuras}{22}{section.7.2}
+\contentsline {subsection}{Incremento de la informaci\IeC {\'o}n}{22}{section*.30}
+\contentsline {subsection}{Ampliaci\IeC {\'o}n del entorno de actuaci\IeC {\'o}n}{22}{section*.31}
+\contentsline {subsection}{Pron\IeC {\'o}stico en tiempo real}{22}{section*.32}
+\contentsline {chapter}{Bibliograf\'{\i }a}{23}{section*.34}
