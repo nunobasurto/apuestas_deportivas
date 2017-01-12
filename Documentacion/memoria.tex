@@ -8,7 +8,6 @@
 \usepackage{hologo}
 \usepackage{colortbl}
 
-
 \RequirePackage{booktabs}
 \RequirePackage[table]{xcolor}
 \RequirePackage{xtab}
@@ -360,8 +359,8 @@
 \title{Predicción de apuestas deportivas}
 \author{Nuño Basurto Hornillos}
 \tutor{Álvar Arnaiz González}
-\tutorAux{Cristobal José Carmona del Jesús}
-\date{23/01/2017}
+\tutorAux{Cristóbal José Carmona del Jesus}
+\date{13/01/2017}
 
 \begin{document}
 
@@ -378,11 +377,11 @@
 
 \noindent\includegraphics[width=\textwidth]{cabecera}\vspace{1cm}
 
-\noindent D. Álvar Arnaiz González y D. Cristóbal José Carmona del Jesús profesores del departamento de Ingeniería Civil, Área de Lenguajes y Sistemas Informáticos.
+\noindent D. Álvar Arnaiz González y D. Cristóbal José Carmona del Jesus profesores del departamento de Ingeniería Civil, Área de Lenguajes y Sistemas Informáticos.
 
 \noindent Expone:
 
-\noindent Que el alumno D. \nombre, con DNI 71295798-F, ha realizado el Trabajo final de Grado en Ingeniería Informática titulado Predicción de apuestas deportivas de TFG. 
+\noindent Que el alumno D. \nombre, con DNI 71295798-F, ha realizado el Trabajo Final de Grado en Ingeniería Informática titulado Predicción de apuestas deportivas. 
 
 \noindent Y que dicho trabajo ha sido realizado por el alumno bajo la dirección del que suscribe, en virtud de lo cual se autoriza su presentación y defensa.
 
@@ -403,7 +402,7 @@ D. Álvar Arnaiz González
 \begin{minipage}{0.45\textwidth}
 \begin{flushleft} %\large
 Vº. Bº. del co-tutor:\\[2cm]
-D. Cristóbal José Camona del Jesús
+D. Cristóbal José Camona del Jesus
 \end{flushleft}
 \end{minipage}
 \hfill
@@ -427,14 +426,15 @@ D. Cristóbal José Camona del Jesús
 % Abstract en castellano
 \renewcommand*\abstractname{Resumen}
 \begin{abstract}
-La gran cantidad de información disponible que nos es accesible, nos permite realizar análisis más exhaustivos con el fin de lograr valores concretos.
+La gran cantidad de información disponible a la que podemos acceder a través de Internet y la creciente capacidad de las técnicas de tratamiento automático de datos, está produciendo que disciplinas como la minería de datos estén ganando atención. Toda esta cantidad de información no siempre se utiliza, quedando <<olvidada>> en servidores aguardando ser explotada. Esta es la idea con la que surge este proyecto de fin de grado, tratar de buscar en la web información de partidos de fútbol, utilizarla para entrenar una técnica de clasificación y poder ser capaz de predecir resultados de próximos partidos. Obviamente, la tarea resulta ambiciosa e interesante.
 
-Este trabajo de fin de grado es una herramienta capaz de generar predicciones en partidos de fútbol, con el objetivo de proporcionar al usuario la información necesaria, para que este pueda orientarse a la hora de llevar a cabo apuestas deportivas.
+Más concretamente, este proyecto busca diseñar e implementar una herramienta capaz de generar predicciones en partidos de fútbol, con el objetivo de proporcionar al usuario la información necesaria para que pueda orientarse a la hora de llevar a cabo apuestas deportivas. Todo ello se realizará en una interfaz web cliente-servidor pensada en la facilidad de uso para usuarios de cualquier edad.
+
 \end{abstract}
 
 \renewcommand*\abstractname{Descriptores}
 \begin{abstract}
-Scraping, bases de datos, Drupal, PHP, apuestas, predicción
+Scraping, bases de datos, Drupal, PHP, apuestas, predicción, minería de datos, redes neuronales
 \end{abstract}
 
 \clearpage
@@ -442,14 +442,16 @@ Scraping, bases de datos, Drupal, PHP, apuestas, predicción
 % Abstract en inglés
 \renewcommand*\abstractname{Abstract}
 \begin{abstract}
-The large amount of available information that is accessible for us, allows us to carry out more exhaustive analyzes in order to achieve concrete values.
 
-This project is a tool capable of generating predictions in football matches, with the aim of providing to the user the necessary information, so that he can orientate himself when carrying out sports betting.
+The big amount of information available nowadays through Internet and the increasing capacity of automatic data-processing techniques are leading to disciplines such as data mining being gaining attention. All this amount of information is not always used, being <<forgotten>> in servers waiting to be exploited. Based on this idea, this project try to search in the net information about football matches and use it to train a technique of classification which can be able to predict results of upcoming matches. Obviously, the task is ambitious and interesting.
+
+More specifically, this project try to find how to design and implement a tool capable of generating predictions in football matches, with the aim of providing the user the necessary information in order to he can orientate himself when making sports bets. All of this will be done in a client-server web interface designed for ease of use for users of any age.
+
 \end{abstract}
 
 \renewcommand*\abstractname{Keywords}
 \begin{abstract}
-Scrapping, Bases de datos, Drupal, PHP, Backpropagation
+Scraping, Bases de datos, Drupal, PHP, Backpropagation, data mining, neural networks
 \end{abstract}
 
 \clearpage

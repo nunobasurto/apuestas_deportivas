@@ -1,6 +1,7 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
-En este capítulo vamos a abordar todo lo concerniente al proyecto. Es un resumen de como se ha llevado a cabo el proyecto.
+En este capítulo vamos a destacar los puntos claves del proyecto y como se han llevado a cabo.
+
 \section{Lenguaje para el desarrollo del proyecto}
 
 Desde un primer momento se decidió el empleo de PHP como lenguaje central en la implementación del proyecto dado que permite el desarrollo web de contenido dinámico. El proyecto se ha llevado a cabo con Sublime Text, lo cual ha permitido una implementación del código más sencilla ya que iba mostrando posibles predicciones de texto.
@@ -24,37 +25,29 @@ Antes de la entrada de los datos al algoritmo se realiza una normalización de l
 \large{$$v' = \frac{v-min_{a}}{max_{a}-min_{a}}$$}
 \end{center}
 
-En un primer momento se pensó introducir todos los partidos anteriores como instancias, independientemente el equipo hubiese disputado el partido como local o como visitante, para diferenciarlo se establecía un campo en la tabla \textit{clasificacion\_jornada}, llamado \textit{local\_visitante}, este campo se encuentra a 0 si el equipo juega como local o 1 si juega como visitante. Dado que los resultados obtenidos no eran muy bueno se planteó otra posibilidad, si el equipo iba a disputar el partido como local se tomaban únicamente los datos de os partidos como local para ese equipo y para el rival lo mismo, se iban a tomar los datos como visitante.
+En un primer momento se pensó introducir todos los partidos anteriores como instancias, independientemente el equipo hubiese disputado el partido como local o como visitante, para diferenciarlo se establecía un campo en la tabla \textit{clasificacion\_jornada}, llamado \textit{local\_visitante}, este campo se encuentra a 0 si el equipo juega como local o 1 si juega como visitante. Dado que los resultados obtenidos no eran óptimos se planteó otra posibilidad: si el equipo iba a disputar el partido como local se tomaban únicamente los datos de los partidos como local para ese equipo y para el rival lo mismo, se iban a tomar los datos como visitante.
 
-Se realizó un estudio de tres jornada, en concreto la 12, 13 y 14, para elegir una u otra, en estas tablas \ref{tabla:jornada12}, \ref{tabla:jornada13} y \ref{tabla:jornada14} podemos observar los resultados obtenidos en los algoritmos, \textit{Pronóstico 1} es el primer método nombrado donde se utilizaban todos los partidos, el segundo método donde se diferenciaba local y visitante es \textit{Pronóstico 2}.
+Se realizó un estudio durante tres jornadas, en concreto las jornadas 12, 13 y 14, para elegir una de las opciones planteadas previamente. En las tablas \ref{tabla:jornada12}, \ref{tabla:jornada13} y \ref{tabla:jornada14} podemos observar los resultados obtenidos por los algoritmos. \textit{Pronóstico 1} es el primer método donde se utilizaban todos los partidos, mientras que el segundo método donde diferenciabamos local y visitante es \textit{Pronóstico 2}.
 
 Una vez analizados los datos vemos como es el segundo método el que consigue mejores resultados.
  \begin{table}
   \begin{center}
-   \begin{tabular}{|p{5cm} | p{2.5cm} |p{2.5cm} |p{2.5cm} |}
-    \hline
-   	Jornada 12 & Resultado & Pronostico 1 & Pronostico 2\\
-    \hline
-    Alaves - Espanyol & 0-1 & \cellcolor{red}1 & \cellcolor{green}2\\
-    \hline
-    Athletic - Villareal & 1-0 & \cellcolor{red}X & \cellcolor{red}2\\
-    \hline
-    Barcelona - Málaga & 0-0 & \cellcolor{red}1 & \cellcolor{green}X\\
-    \hline
-    Deportivo - Sevilla & 2-3 & \cellcolor{red}1 & \cellcolor{red}X\\
-    \hline
-    Valencia - Granada & 1-1 & \cellcolor{green}X & \cellcolor{green}X\\
-    \hline
-    Betis - Las Palmas & 2-0 & \cellcolor{red}X & \cellcolor{red}X\\
-    \hline
-    Atletico - Real Madrid & 0-3 & \cellcolor{red}1 & \cellcolor{green}2\\
-    \hline
-    Sporting - Real Sociedad & 1-3 & \cellcolor{red}1 & \cellcolor{green}2\\
-    \hline
-	Eibar - Celta & 1-0 & \cellcolor{green}1 & \cellcolor{green}1\\
-    \hline
-    Leganés - Osasuna & 2-0 & \cellcolor{red}X & \cellcolor{red}X\\
-    \hline
+    \centering
+    \begin{tabular}{p{5cm} c c c }
+    \toprule
+   	Jornada 12 & Resultado & Pronóstico 1 & Pronóstico 2\\
+    \midrule
+    Alavés - Espanyol & 0-1 & \cellcolor{red!30}1 & \cellcolor{green!30}2\\    
+    Athletic - Villareal & 1-0 & \cellcolor{red!30}X & \cellcolor{red!30}X\\    
+    Barcelona - Málaga & 0-0 & \cellcolor{red!30}1 & \cellcolor{red!30}1\\    
+    Deportivo - Sevilla & 2-3 & \cellcolor{red!30}1 & \cellcolor{red!30}1\\    
+    Valencia - Granada & 1-1 & \cellcolor{green!30}X & \cellcolor{green!30}X\\    
+    Betis - Las Palmas & 2-0 & \cellcolor{red!30}X & \cellcolor{red!30}X\\
+    Atlético - Real Madrid & 0-3 & \cellcolor{red!30}1 & \cellcolor{green!30}2\\
+    Sporting - Real Sociedad & 1-3 & \cellcolor{red!30}1 & \cellcolor{green!30}2\\    
+	Eibar - Celta & 1-0 & \cellcolor{green!30}1 & \cellcolor{green!30}1\\
+    Leganés - Osasuna & 2-0 & \cellcolor{red!30}X & \cellcolor{red!30}X\\
+    \bottomrule
    \end{tabular}
    \caption{Pruebas jornada 12.}
    \label{tabla:jornada12}
@@ -63,30 +56,22 @@ Una vez analizados los datos vemos como es el segundo método el que consigue me
 
  \begin{table}
   \begin{center}
-   \begin{tabular}{|p{5cm} | p{2.5cm} |p{2.5cm} |p{2.5cm} |}
-    \hline
-   	Jornada 13 & Resultado & Pronostico 1 & Pronostico 2\\
-    \hline
-    Celta - Granada & 3-1 & \cellcolor{green}1 & \cellcolor{green}1\\
-    \hline
-    Espanyol - Leganés & 3-0 & \cellcolor{green}1 & \cellcolor{green}1\\
-    \hline
-    Málaga - Deportivo & 4-3 & \cellcolor{red}2 & \cellcolor{green}1\\
-    \hline
-    Osasuna - Atlético & 0-3 & \cellcolor{green}2 & \cellcolor{red}X\\
-    \hline
-    Real Madrid - Sporting & 2-1 & \cellcolor{red}X & \cellcolor{green}1\\
-    \hline
-    Real Sociedad - Barcelona & 1-1 & \cellcolor{red}2 & \cellcolor{red}2\\
-    \hline
-    Villareal - Alavés & 0-2 & \cellcolor{red}X & \cellcolor{red}1\\
-    \hline
-	Sevilla - Valencia & 2-1 & \cellcolor{red}X & \cellcolor{green}1\\
-    \hline
-	Eibar - Betis & 3-1 & \cellcolor{green}1 & \cellcolor{green}1\\
-    \hline
-    Las Palmas - Athletic & 3-1 & \cellcolor{red}X & \cellcolor{red}1\\
-    \hline
+    \centering
+    \begin{tabular}{p{5cm} c c c }
+    \toprule
+   	Jornada 13 & Resultado & Pronóstico 1 & Pronóstico 2\\
+   	\midrule
+    Celta - Granada & 3-1 & \cellcolor{green!30}1 & \cellcolor{green!30}1\\
+    Espanyol - Leganés & 3-0 & \cellcolor{green!30}1 & \cellcolor{red!30}X\\    
+    Málaga - Deportivo & 4-3 & \cellcolor{red!30}2 & \cellcolor{green!30}1\\    
+    Osasuna - Atlético & 0-3 & \cellcolor{green!30}2 & \cellcolor{green!30}2\\    
+    Real Madrid - Sporting & 2-1 & \cellcolor{red!30}X & \cellcolor{green!30}1\\    
+    Real Sociedad - Barcelona & 1-1 & \cellcolor{red!30}2 & \cellcolor{red!30}2\\    
+    Villareal - Alavés & 0-2 & \cellcolor{red!30}X & \cellcolor{green!30}2\\    
+	Sevilla - Valencia & 2-1 & \cellcolor{red!30}X & \cellcolor{green!30}1\\    
+	Eibar - Betis & 3-1 & \cellcolor{green!30}1 & \cellcolor{red!30}X\\    
+    Las Palmas - Athletic & 3-1 & \cellcolor{red!30}X & \cellcolor{green!30}1\\
+    \bottomrule    
    \end{tabular}
    \caption{Pruebas jornada 13.}
    \label{tabla:jornada13}
@@ -95,30 +80,22 @@ Una vez analizados los datos vemos como es el segundo método el que consigue me
  
   \begin{table}
   \begin{center}
-   \begin{tabular}{|p{5cm} | p{2.5cm} |p{2.5cm} |p{2.5cm} |}
-    \hline
-   	Jornada 14 & Resultado & Pronostico 1 & Pronostico 2\\
-    \hline
-    Alaves - Las Palmas & 1-1 & \cellcolor{green}X & \cellcolor{green}X\\
-    \hline
-    Athletic - Eibar & 3-1 & \cellcolor{green}1 & \cellcolor{red}X\\
-    \hline
-    Barcelona - Real Madrid & 1-1 & \cellcolor{green}X & \cellcolor{red}2\\
-    \hline
-    Deportivo - Real Sociedad & 5-1 & \cellcolor{red}X & \cellcolor{red}2\\
-    \hline
-    Valencia - Málaga & 2-2 & \cellcolor{red}2 & \cellcolor{red}2\\
-    \hline
-    Betis - Celta & 3-3 & \cellcolor{green}X & \cellcolor{green}X\\
-    \hline
-    Atletico - Espanyol & 0-0 & \cellcolor{red}2 & \cellcolor{green}1\\
-    \hline
-    Sporting - Osasuna & 3-1 & \cellcolor{red}X & \cellcolor{green}1\\
-    \hline
-	Granada - Sevilla & 2-1 & \cellcolor{red}X & \cellcolor{red}2\\
-    \hline
-    Leganés - Villareal & 0-0 & \cellcolor{red}1 & \cellcolor{green}X\\
-    \hline
+    \centering
+	\begin{tabular}{p{5cm} c c c }
+    \toprule
+   	Jornada 14 & Resultado & Pronóstico 1 & Pronóstico 2\\
+    \midrule
+    Alavés - Las Palmas & 1-1 & \cellcolor{green!30}X & \cellcolor{green!30}X\\
+    Athletic - Eibar & 3-1 & \cellcolor{green!30}1 & \cellcolor{red!30}X\\    
+    Barcelona - Real Madrid & 1-1 & \cellcolor{green!30}X & \cellcolor{red!30}2\\    
+    Deportivo - Real Sociedad & 5-1 & \cellcolor{red!30}X & \cellcolor{red!30}2\\    
+    Valencia - Málaga & 2-2 & \cellcolor{red!30}2 & \cellcolor{red!30}2\\    
+    Betis - Celta & 3-3 & \cellcolor{green!30}X & \cellcolor{green!30}X\\    
+    Atlético - Espanyol & 0-0 & \cellcolor{red!30}2 & \cellcolor{red!30}1\\    
+    Sporting - Osasuna & 3-1 & \cellcolor{red!30}X & \cellcolor{green!30}1\\    
+	Granada - Sevilla & 2-1 & \cellcolor{red!30}X & \cellcolor{red!30}2\\    
+    Leganés - Villareal & 0-0 & \cellcolor{red!30}1 & \cellcolor{green!30}X\\
+	\bottomrule    
    \end{tabular}
    \caption{Pruebas jornada 14.}
    \label{tabla:jornada14}
@@ -126,22 +103,66 @@ Una vez analizados los datos vemos como es el segundo método el que consigue me
  \end{table} 
 
 \section{Optimización del algoritmo de Backpropagation}
+El problemas de las redes neuronales, es que estas necesitan ajustarse para su correcto funcionamiento, ya que no es lo mismo pasar instancias con un número reducido de columnas que instancias muy grandes.
+
 Cuando los datos se encuentran en la red neuronal es preciso optimizar el número de neuronas que se van a utilizar. Con un número de neuronas pequeño, la red neuronal puede ser incapaz de aprender todos los patrones existentes, teniendo problemas para devolver la salida deseada. En cambio, si el número de neuronas es demasiado grande, la red neuronal se queda sin margen de adaptación a cambios.
 
-Otro factor a tener en cuenta son las iteraciones que van a ejecutarse, ya que ante un pequeño número el algoritmo puede no aprender suficiente, y si el número es muy alto termina memorizando cada una. Esto supone que no se logren los resultados deseados en el test, por lo que se ha llevado a cabo un estudio para determinar cual es la cantidad más adecuada de neuronas y de epochs para el aprendizaje de la red neuronal.
+Otro factor a tener en cuenta son las iteraciones que van a ejecutarse, ya que ante un pequeño número el algoritmo puede no aprender suficiente, y si el número es muy alto termina memorizando cada una. Esto supone que no se logren los resultados deseados en el test, por lo que se ha llevado a cabo un estudio para determinar cual es la cantidad más adecuada de neuronas y de iteraciones para el aprendizaje de la red neuronal.
 
-Se utilizó la jornada 14 para ver como realizar el ajuste de la red neuronal, extraíamos el error que nos encontrábamos realizando el training, en esta tabla podemos observar el error obtenido.
+Se utilizó la jornada 14 para ver como realizar el ajuste de la red neuronal, extraíamos el error que nos encontrábamos realizando el training, en la tabla~\ref{tabla:pruebas_red} podemos observar el error obtenido.
 
-
-
-TABLA
+Para realizar las pruebas se tuvo que aumentar el tiempo de espera del servidor, ya que no podía ejecutar a la vez todos los partidos. Como se ha podido observar en la tabla se han encontrado mejores resultados en las ejecuciones con 15 y con 20 neuronas cuyos valores son similares. Dado que es costoso para el servidor una ejecución con muchas neuronas, se optó por escoger la mejor solución con menos numero de iteraciones y neuronas, es decir, la configuración con 15 neuronas y $3\,000$ iteraciones.
 
 
-\section{Interfaz sencilla para el usuario}
+  \begin{table}
+  \begin{center}
+   \begin{tabular}{l c c c c c c}
+    \toprule
+    \multirow{2}{*}{Iteraciones}            & \multicolumn{6}{c}{Neuronas} \\ \cmidrule{2-7}
+   	& \textbf{5} & \textbf{10} & \textbf{15} & \textbf{20} & \textbf{25} & \textbf{30}\\  \midrule 	
+    1000 & 0.9865 & 0.5632 & 0.2122 & 0.2902 & 0.3113 & 0.8873\\    
+    2000 & 0.9865 & 0.4312 & 0.0145	& 0.0193 & 0.0105 & 0.7846\\    
+    3000 & 0.9865 & 0.3214 & 0.0035 & 0.0055 & 0.0096 & 0.6575\\    
+    4000 & 0.9865 & 0.2214 & 0.0035 & 0.0036 & 0.0096 & 0.5664\\
+	5000 & 0.9865 & 0.2132 & 0.0034 & 0.0034 & 0.0095 & 0.5664\\
+	\bottomrule
+   \end{tabular}
+   \caption{Pruebas realizadas de la red neuronal.}
+   \label{tabla:pruebas_red}
+  \end{center}
+ \end{table} 
+
+
+\section{Diseño web centrado en el usuario}
 
 Con todos los datos necesarios es importante conocer cómo mostrarlos al usuario que accede al sitio web. Dado que el objetivo de esta página es su uso con apuestas deportivas, se ha hecho un algoritmo de scraping que recopila las cuotas de las casas de apuestas para cada partido.
 A partir de los resultados que se han predicho, se muestran las cuotas de las cuatro casas de apuestas principales en España, ofreciendo al usuario la posibilidad de apostar en ellas.
 En una de la páginas del sitio web se puede observar el balance general a lo largo de la temporada, donde es posible acceder a cada una de las jornadas y ver más detalladamente lo ocurrido a lo largo de la temporada.
+
+Dado que se ha realizado un diseño web centrado en el usuario, se elaboró un prototipo en papel (véase imagen~\ref{fig:prototipo}) de como se iban a elaborar las pantallas de \textit{Informe Jornada} e \textit{Informe General}. 
+En la parte superior de la imagen vemos un diseño utilizado para implementar \textit{Informe Jornada} (véase imagen~\ref{fig:infJor}), donde si se acierta aparecen las cuotas y si se comete un error aparece un \textit{-1} y abajo finalmente se realiza el sumatorio.
+En la parte inferior está el diseño utilizado para el \textit{Informe General} (véase imagen~\ref{fig:infGen}), donde tenemos cada jornada con el sumatorio y en la parte inferior el sumatorio global.
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{img/prototipo}
+\caption{Prototipos diseño web.}
+\label{fig:prototipo}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{img/drupal_inf_jornada}
+\caption{Ventana Informe Jornada.}
+\label{fig:infJor}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=.9\textwidth]{img/drupal_inf_general_usuario}
+\caption{Ventana Informe General.}
+\label{fig:infGen}
+\end{figure}
 
 \section{Automatización del funcionamiento}
 
