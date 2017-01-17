@@ -30,7 +30,7 @@ foreach($trs as $tr){
 			
 		$equipo = trim($equipo);
 		$id_equipo = db_query('SELECT e.id_equipo FROM {equipos} e WHERE e.nombreCompleto = :equipo', array(':equipo' => $equipo))->fetchField();
-		$control  = db_query('SELECT cj.posicion FROM {clasificacion_jornada} cj WHERE cj.id_equipo = :id AND cj.jornada = :jornada', array(':id' => $id_equipo), ':jornada' => $jornada)->fetchField();
+		$control  = db_query('SELECT cj.posicion FROM {clasificacion_jornada} cj WHERE cj.id_equipo = :id AND cj.jornada = :jornada', array(':id' => $id_equipo, ':jornada' => $jornada))->fetchField();
 		//Control para que no lo vuelva a ejecutar si los datos ya han sido almacenados.
 		if($control==null){
 			$insert = db_insert('clasificacion_jornada')
